@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}Trends — Treatment Companion{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <h1>Trends over the last 14 days</h1>
+  <p class="muted">A visual look at how you've been feeling.</p>
+</section>
+
+<section class="card">
+  <h2>Overall severity</h2>
+  <canvas id="severityChart" height="120"></canvas>
+  <p class="muted small" id="noDataMsg" style="display:none;">Log at least 2 entries to see a chart.</p>
+</section>
+
+<section class="card">
+  <h2>Symptoms over time</h2>
+  <canvas id="symptomChart" height="140"></canvas>
+</section>
+
+<script>
+  const data = {{ data | tojson }};
+
+  document.addEventListener("DOMContentLoaded", function () {
+    if (data.labels.length < 2) {
+      document.getElementById("noDataMsg").style.display = "block";
+    }
+    drawSeverityChart();
+    drawSymptomChart();
+  });
+
+  function drawSeverityChart() {
+    const canvas = document.getElementById("severityChart");
+    const ctx = canvas.getContext("2d");
+    drawLineChart(ctx, canvas, data.labels, [
+      { label: "Overall", values: data.severity, color: "#3a9e7f" }
+    ]);
+  }
+
+  function drawSymptomChart() {
+    const canvas = document.getElementById("symptomChart");
+    const ctx = canvas.getContext("2d");
+
+    const colors = ["#3a9e7f", "#e8a33d", "#d9544a", "#5b8fdc", "#9c6ade", "#4bb7c9", "#d97ba8", "#7ca86b"];
+    const series = [];
+    let i = 0;
+    for (const [name, values] of Object.entries(data.symptoms)) {
+      series.push({
+        label: name.replace(/_/g, " "),
+        values: values,
+        color: colors[i % colors.length],
+      });
+      i++;
+    }
+    drawLineChart(ctx, canvas, data.labels, series);
+  }
+
+  function drawLineChart(ctx, canvas, labels, series) {
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = canvas.clientWidth;
+    const cssH = canvas.clientHeight;
+    canvas.width = cssW * dpr;
+    canvas.height = cssH * dpr;
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, cssW, cssH);
+
+    const padL = 30, padR = 12, padT = 12, padB = 30;
+    const W = cssW - padL - padR;
+    const H = cssH - padT - padB;
+
+    // Grid + Y axis (1-5)
+    ctx.strokeStyle = "#e3e8e6";
+    ctx.fillStyle = "#88969a";
+    ctx.font = "11px sans-serif";
+    ctx.textAlign = "right";
+    for (let v = 1; v <= 5; v++) {
+      const y = padT + H - ((v - 1) / 4) * H;
+      ctx.beginPath();
+      ctx.moveTo(padL, y);
+      ctx.lineTo(padL + W, y);
+      ctx.stroke();
+      ctx.fillText(v.toString(), padL - 6, y + 4);
+    }
+
+    // X axis labels
+    ctx.textAlign = "center";
+    const step = W / Math.max(1, labels.length - 1);
+    labels.forEach((label, i) => {
+      const x = padL + i * step;
+      ctx.fillText(label, x, padT + H + 18);
+    });
+
+    // Series
+    series.forEach(s => {
+      ctx.strokeStyle = s.color;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      let started = false;
+      s.values.forEach((v, i) => {
+        if (v === null || v === undefined) return;
+        const x = padL + i * step;
+        const y = padT + H - ((v - 1) / 4) * H;
+        if (!started) {
+          ctx.moveTo(x, y);
+          started = true;
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+      ctx.stroke();
+
+      // Points
+      s.values.forEach((v, i) => {
+        if (v === null || v === undefined) return;
+        const x = padL + i * step;
+        const y = padT + H - ((v - 1) / 4) * H;
+        ctx.fillStyle = s.color;
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    });
+
+    // Legend
+    let lx = padL;
+    const ly = padT + H + 22;
+    ctx.font = "12px sans-serif";
+    ctx.textAlign = "left";
+    series.forEach(s => {
+      ctx.fillStyle = s.color;
+      ctx.fillRect(lx, ly - 8, 10, 10);
+      ctx.fillStyle = "#5b6b70";
+      ctx.fillText(s.label, lx + 14, ly + 1);
+      lx += ctx.measureText(s.label).width + 30;
+    });
+  }
+</script>
+{% endblock %}

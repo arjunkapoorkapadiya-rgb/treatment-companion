@@ -1,0 +1,141 @@
+Set-Content -Path "templates\medications.html" -Encoding UTF8 -Value @'
+{% extends "base.html" %}
+{% block title %}Medications — Treatment Companion{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <h1>💊 Medications</h1>
+  <p class="muted">Track your daily meds and see your adherence over time.</p>
+</section>
+
+{# Today summary #}
+{% if summary.total_active > 0 %}
+  <div class="med-summary-card">
+    <div class="med-summary-left">
+      <div class="med-summary-label">Today</div>
+      <div class="med-summary-count">
+        <span class="med-big">{{ summary.taken }}</span>
+        <span class="med-total">/ {{ summary.total_active }}</span>
+      </div>
+      <div class="med-summary-sub">meds taken</div>
+    </div>
+    <div class="med-summary-right">
+      {% if summary.pending == 0 %}
+        <span class="chip chip-success">✓ All taken today</span>
+      {% else %}
+        <span class="chip chip-warn">{{ summary.pending }} pending</span>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
+
+{# Today's meds list #}
+<section class="card">
+  <h2>Today's medications</h2>
+  {% if summary.active_meds %}
+    <ul class="med-list">
+      {% for m in summary.active_meds %}
+        {% set taken = m.doses.get(summary.day, false) %}
+        <li class="med-item {% if taken %}med-taken{% endif %}">
+          <form method="post" action="{{ url_for('medications_toggle', med_id=m.id) }}" class="inline">
+            <button type="submit" class="med-checkbox" aria-label="Toggle taken">
+              {% if taken %}✓{% endif %}
+            </button>
+          </form>
+          <div class="med-body">
+            <div class="med-name">
+              <strong>{{ m.name }}</strong>
+              <span class="muted small">· {{ m.dose }}</span>
+            </div>
+            <div class="muted small">{{ m.schedule }}</div>
+            {% if m.notes %}<div class="med-notes">{{ m.notes }}</div>{% endif %}
+          </div>
+          <form method="post" action="{{ url_for('medications_delete', med_id=m.id) }}" class="inline">
+            <button type="submit" class="btn btn-tiny btn-danger" onclick="return confirm('Delete this medication?')">×</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted">No active medications. Add one below.</p>
+  {% endif %}
+</section>
+
+{# Add medication #}
+<section class="card">
+  <h2>Add a medication</h2>
+  <form method="post" action="{{ url_for('medications_add') }}" class="med-form">
+    <div class="med-form-row">
+      <div class="field">
+        <label for="name">Medication name</label>
+        <input type="text" id="name" name="name" placeholder="e.g., Tamoxifen" required maxlength="100" list="common-meds" />
+        <datalist id="common-meds">
+          {% for m in common_meds %}
+            <option value="{{ m.name }}"></option>
+          {% endfor %}
+        </datalist>
+      </div>
+      <div class="field">
+        <label for="dose">Dose</label>
+        <input type="text" id="dose" name="dose" placeholder="e.g., 20 mg" maxlength="80" />
+      </div>
+    </div>
+    <div class="field">
+      <label for="schedule">Schedule</label>
+      <input type="text" id="schedule" name="schedule" placeholder="e.g., Once daily at 8am" maxlength="100" />
+    </div>
+    <div class="field">
+      <label for="notes">Notes (optional)</label>
+      <input type="text" id="notes" name="notes" placeholder="e.g., Take with food" maxlength="500" />
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Add medication</button>
+    </div>
+  </form>
+</section>
+
+{# Adherence #}
+{% if adherence.dates %}
+  <section class="card">
+    <h2>Adherence (last 14 days)</h2>
+    <p class="muted small">
+      Overall: <strong>{{ adherence.overall_pct }}%</strong> of doses taken.
+    </p>
+    <div class="adherence-chart">
+      {% for i in range(adherence.dates|length) %}
+        <div class="adherence-bar-wrap">
+          <div class="adherence-bar" style="height: {{ adherence.percentages[i] }}%;">
+            <span class="adherence-tooltip">{{ adherence.percentages[i] }}%</span>
+          </div>
+          <div class="adherence-label">{{ adherence.dates[i] }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
+
+{% if medications|length > 0 %}
+  <section class="card">
+    <h2>All medications ({{ medications|length }})</h2>
+    <ul class="med-list">
+      {% for m in medications %}
+        {% if not m.active %}
+          <li class="med-item med-inactive">
+            <div class="med-body">
+              <div class="med-name">
+                <strong>{{ m.name }}</strong>
+                <span class="chip chip-muted">inactive</span>
+              </div>
+              <div class="muted small">{{ m.dose }} · {{ m.schedule }}</div>
+            </div>
+            <form method="post" action="{{ url_for('medications_reactivate', med_id=m.id) }}" class="inline">
+              <button type="submit" class="btn btn-tiny">Reactivate</button>
+            </form>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </section>
+{% endif %}
+{% endblock %}
+'@

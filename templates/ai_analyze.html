@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}AI Log — Treatment Companion{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <h1>✨ Just tell me how you're feeling</h1>
+  <p class="muted">Type or speak. The AI will structure it for you.</p>
+</section>
+
+{% if not parsed %}
+  {# Voice input section #}
+  <section class="card voice-card">
+    <div class="voice-controls">
+      <button type="button" id="micBtn" class="mic-btn" aria-label="Record voice">
+        <span class="mic-icon">🎤</span>
+      </button>
+      <div class="voice-status">
+        <strong id="voiceTitle">Tap to speak</strong>
+        <span id="voiceHint" class="muted small">Say how you're feeling. We'll write it down.</span>
+      </div>
+    </div>
+    <div id="recordingIndicator" class="recording-indicator" style="display:none;">
+      <span class="rec-dot"></span>
+      <span>Recording... tap the mic again to stop</span>
+    </div>
+    <p id="voiceError" class="voice-error" style="display:none;"></p>
+  </section>
+
+  <p class="or-divider"><span>or type it</span></p>
+
+  {# Text input form #}
+  <form method="post" action="{{ url_for('analyze_page') }}" class="card form-card">
+    <div class="field">
+      <label for="raw_text">How are you doing today?</label>
+      <textarea
+        id="raw_text"
+        name="raw_text"
+        rows="5"
+        placeholder="Example: Felt really tired today, mild headache, didn't sleep well. Nausea after lunch. Overall a 3."
+        required
+      >{{ raw_text }}</textarea>
+      <p class="muted small">No special format needed. Speak naturally.</p>
+    </div>
+
+    <div class="form-actions">
+      <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+      <button type="submit" class="btn btn-primary">✨ Analyze with AI</button>
+    </div>
+  </form>
+
+  <section class="card examples-card">
+    <h2>Try one of these</h2>
+    <ul class="example-list">
+      <li><button type="button" class="example-btn" data-text="Felt really tired today, mild headache, didn't sleep well. Nausea after lunch. Overall a 3.">Felt really tired today, mild headache, didn't sleep well...</button></li>
+      <li><button type="button" class="example-btn" data-text="Bad nausea after lunch, threw up twice, overall a 4.">Bad nausea after lunch, threw up twice...</button></li>
+      <li><button type="button" class="example-btn" data-text="Good day! Slept 8 hours, appetite normal, mood is great.">Good day! Slept 8 hours, appetite normal...</button></li>
+    </ul>
+  </section>
+
+{% else %}
+  <section class="card ai-result-card">
+    <div class="ai-badge">✨ AI parsed your text</div>
+    <p class="muted small">Here's what I understood. Review and adjust if needed, then save.</p>
+
+    <form method="post" action="{{ url_for('analyze_page') }}" class="form-card no-pad">
+      <input type="hidden" name="confirm" value="yes" />
+
+      <div class="field">
+        <label for="entry_date">Date</label>
+        <input type="date" id="entry_date" name="entry_date" required />
+      </div>
+
+      <div class="field">
+        <label>Overall severity</label>
+        <div class="severity-scale">
+          {% for i in range(1, 6) %}
+            <label class="severity-option">
+              <input type="radio" name="severity" value="{{ i }}" {% if parsed.severity == i %}checked{% endif %} />
+              <span class="dot dot-{{ i }}"></span>
+              <span class="label">{{ i }} — {{ severity_labels[i] }}</span>
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Symptoms (AI detected what you mentioned)</label>
+        <div class="symptoms-grid">
+          {% for symptom in common_symptoms %}
+            <div class="symptom-row">
+              <label for="symptom_{{ symptom }}">{{ symptom.replace('_', ' ').title() }}</label>
+              <select name="symptom_{{ symptom }}" id="symptom_{{ symptom }}">
+                <option value="">—</option>
+                {% for i in range(1, 6) %}
+                  <option value="{{ i }}" {% if parsed.symptoms.get(symptom) == i %}selected{% endif %}>{{ i }} — {{ severity_labels[i] }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="notes">Notes</label>
+        <textarea id="notes" name="notes" rows="3">{{ parsed.notes }}</textarea>
+      </div>
+
+      <div class="form-actions">
+        <a href="{{ url_for('analyze_page') }}" class="btn btn-secondary">← Start over</a>
+        <button type="submit" class="btn btn-primary">Save entry</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>What you said</h2>
+    <blockquote class="user-text">"{{ raw_text }}"</blockquote>
+  </section>
+{% endif %}
+
+<script src="{{ url_for('static', filename='js/voice.js') }}"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dateInput = document.getElementById("entry_date");
+    if (dateInput && !dateInput.value) {
+      dateInput.value = new Date().toISOString().split("T")[0];
+    }
+    document.querySelectorAll(".example-btn").forEach(btn => {
+      btn.addEventListener("click", function () {
+        const ta = document.getElementById("raw_text");
+        if (ta) {
+          ta.value = btn.dataset.text;
+          ta.focus();
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}

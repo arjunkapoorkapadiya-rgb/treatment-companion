@@ -1,0 +1,122 @@
+﻿{% extends "base.html" %}
+{% block title %}{{ circle.patient_name }}'s Care Circle{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <h1>💚 {{ circle.patient_name }}'s Care Circle</h1>
+  <p class="muted">You're viewing as a family member. Thank you for being here.</p>
+</section>
+
+<div class="circle-stats" style="background: var(--surface); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 20px;">
+  <div class="stat">
+    <div class="stat-value">{{ stats.member_count }}</div>
+    <div class="stat-label">Family members</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">{{ stats.pending_tasks }}</div>
+    <div class="stat-label">Open tasks</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">{{ stats.upcoming_appointments }}</div>
+    <div class="stat-label">Appointments</div>
+  </div>
+</div>
+
+{% if circle.appointments %}
+  <section class="card">
+    <h2>📅 Upcoming appointments</h2>
+    <ul class="appt-list">
+      {% for a in circle.appointments %}
+        <li class="appt-item">
+          <div class="appt-date">{{ a.date }}</div>
+          <div class="appt-body">
+            <strong>{{ a.title }}</strong>
+            {% if a.location %}<div class="muted small">📍 {{ a.location }}</div>{% endif %}
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endif %}
+
+<section class="card">
+  <h2>🤝 How can you help?</h2>
+  <p class="muted small">Claim a task to let everyone know you've got it.</p>
+
+  {% if circle.tasks %}
+    <ul class="task-list">
+      {% for t in circle.tasks %}
+        {% if not t.done %}
+          <li class="task-item">
+            <div class="task-body">
+              <div class="task-title">{{ t.title }}</div>
+              <div class="muted small">
+                {% if t.assigned_to %}👤 Claimed by {{ t.assigned_to }}{% else %}🟢 Available{% endif %}
+              </div>
+            </div>
+            {% if not t.assigned_to %}
+              <form method="post" action="{{ url_for('caregiver_claim_task', code=circle.code, task_id=t.id) }}" class="claim-form">
+                <input type="text" name="member_name" placeholder="Your name" required maxlength="80" />
+                <button type="submit" class="btn btn-primary btn-tiny">I'll do this</button>
+              </form>
+            {% endif %}
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted">No open tasks right now.</p>
+  {% endif %}
+</section>
+
+<section class="card">
+  <h2>💌 Leave a note</h2>
+  <p class="muted small">A short message of support. {{ circle.patient_name }} will see it.</p>
+
+  <form method="post" action="{{ url_for('caregiver_leave_note', code=circle.code) }}" class="note-form">
+    <input type="text" name="author" placeholder="Your name" required maxlength="80" />
+    <textarea name="text" placeholder="Your message..." required maxlength="1000" rows="3"></textarea>
+    <button type="submit" class="btn btn-primary">Send note</button>
+  </form>
+</section>
+
+{% if circle.notes %}
+  <section class="card">
+    <h2>💬 Notes from the circle</h2>
+    <ul class="note-list">
+      {% for n in circle.notes %}
+        <li class="note-item">
+          <div class="note-meta">
+            <strong>{{ n.author }}</strong>
+            <span class="muted small">{{ n.created_at[:10] }}</span>
+          </div>
+          <div class="note-text">{{ n.text }}</div>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endif %}
+
+{% if circle.members %}
+  <section class="card">
+    <h2>👨‍👩‍👧 The care circle</h2>
+    <ul class="member-list">
+      {% for m in circle.members %}
+        <li class="member-item">
+          <div>
+            <strong>{{ m.name }}</strong>
+            {% if m.relation %}<span class="muted small">· {{ m.relation }}</span>{% endif %}
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endif %}
+
+<div class="card">
+  <p class="muted small center">
+    This is a read-only view. The patient controls who's in the circle.<br>
+    <a href="{{ url_for('caregiver_dashboard') }}">← Back to care circle home</a>
+  </p>
+</div>
+{% endblock %}

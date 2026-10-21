@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Emergency Signs — Treatment Companion{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <h1>🚨 When should I call my care team?</h1>
+  <p class="muted">A quick guide to help you decide. This is not medical advice — when in doubt, always call.</p>
+</section>
+
+{# Emergency notice #}
+<div class="emergency-notice">
+  <strong>Life-threatening emergency?</strong> Call your local emergency number (911, 112, or 108) immediately.
+</div>
+
+{# Checker form #}
+<form method="post" action="{{ url_for('emergency_page') }}" class="card">
+  <h2>What are you experiencing?</h2>
+  <p class="muted small">Select any that apply. We'll tell you how urgent it is.</p>
+
+  <div class="symptom-checkboxes">
+    {% for s in all_symptoms %}
+      <label class="symptom-checkbox">
+        <input type="checkbox" name="symptom" value="{{ s }}" {% if s in selected %}checked{% endif %} />
+        <span>{{ s.replace('_', ' ').title() }}</span>
+      </label>
+    {% endfor %}
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Check my symptoms</button>
+  </div>
+</form>
+
+{# Result #}
+{% if result and result.match %}
+  {% set m = result.match %}
+  <section class="card emergency-result level-{{ m.level }}">
+    <div class="emergency-badge level-{{ m.level }}">
+      {% if m.level == 'red' %}🔴 RED — Emergency
+      {% elif m.level == 'amber' %}🟡 AMBER — Call today
+      {% elif m.level == 'green' %}🟢 GREEN — Self-care
+      {% endif %}
+    </div>
+    <h2>{{ m.title }}</h2>
+    <p class="emergency-action">{{ m.message }}</p>
+    <p class="muted">{{ m.explanation }}</p>
+
+    {% if result.all_matches | length > 1 %}
+      <details class="other-matches">
+        <summary>Other symptoms also matched ({{ result.all_matches | length - 1 }})</summary>
+        <ul>
+          {% for other in result.all_matches %}
+            {% if other.title != m.title %}
+              <li>
+                <strong>{{ other.title }}:</strong> {{ other.message }}
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </details>
+    {% endif %}
+  </section>
+{% elif result and not result.match %}
+  <section class="card emergency-result level-green">
+    <div class="emergency-badge level-green">🟢 Nothing urgent detected</div>
+    <p>Your selected symptoms don't match our urgent-signs list. If you're still worried, call your care team.</p>
+    <p class="muted small">Trust your instincts. It's always okay to call.</p>
+  </section>
+{% endif %}
+
+{# Browse all #}
+<section class="card">
+  <h2>Browse by symptom</h2>
+  <p class="muted small">Click any to see what to do.</p>
+
+  {% for g in groups %}
+    <details class="emergency-item level-{{ g.level }}">
+      <summary>
+        <span class="emergency-dot level-{{ g.level }}"></span>
+        <strong>{{ g.title }}</strong>
+        <span class="emergency-tag level-{{ g.level }}">
+          {% if g.level == 'red' %}🔴 EMERGENCY
+          {% elif g.level == 'amber' %}🟡 Call today
+          {% else %}🟢 Self-care
+          {% endif %}
+        </span>
+      </summary>
+      <div class="emergency-detail">
+        <p><strong>{{ g.message }}</strong></p>
+        <p class="muted">{{ g.explanation }}</p>
+      </div>
+    </details>
+  {% endfor %}
+</section>
+
+<section class="card disclaimer">
+  <p class="muted small">
+    <strong>Disclaimer:</strong> This guide is for informational purposes only. It does not replace
+    medical advice. If you're unsure about any symptom, call your care team. When in doubt, always call.
+  </p>
+</section>
+{% endblock %}

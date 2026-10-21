@@ -1,0 +1,74 @@
+﻿/* Only applies to inner pages, keeps homepage completely untouched */
+.spotlight-bg-container {
+  position: fixed;
+  inset: 0;
+  z-index: 0; /* Changed from -1 so it sits ABOVE the black body background */
+  overflow: hidden;
+  background: #000;
+  pointer-events: none;
+}
+
+.spotlight-bg-base {
+  position: absolute;
+  inset: 0;
+  background: url('/static/bg-base.png') center/cover no-repeat;
+  z-index: 1;
+}
+
+/* THE MAGIC MASK - Hardware Accelerated */
+.spotlight-reveal {
+  position: absolute;
+  inset: 0;
+  background: url('/static/bg-reveal.png') center/cover no-repeat;
+  z-index: 2;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(circle 400px at var(--x, 50vw) var(--y, 50vh), black 0%, rgba(0,0,0,0.6) 40%, transparent 100%);
+  mask-image: radial-gradient(circle 400px at var(--x, 50vw) var(--y, 50vh), black 0%, rgba(0,0,0,0.6) 40%, transparent 100%);
+}
+
+/* Make the app pages look good over the dark background */
+body.has-spotlight {
+  background-color: #000 !important;
+}
+
+/* Push all actual content ABOVE the background layers */
+body.has-spotlight .site-header,
+body.has-spotlight main.container,
+body.has-spotlight .site-footer {
+  position: relative;
+  z-index: 10;
+}
+
+body.has-spotlight .site-header {
+  background: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body.has-spotlight .brand-text,
+body.has-spotlight .site-nav a {
+  color: #fff !important;
+}
+
+body.has-spotlight .site-nav a:hover {
+  color: var(--primary) !important;
+}
+
+/* Make cards frosted glass so they pop against the dark rocks */
+body.has-spotlight .card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.has-spotlight h1,
+body.has-spotlight h2,
+body.has-spotlight p {
+  color: #0f172a;
+}
+
+body.has-spotlight .page-head h1,
+body.has-spotlight .page-head p {
+  color: #fff !important;
+}

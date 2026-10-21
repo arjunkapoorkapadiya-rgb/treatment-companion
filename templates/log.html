@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Log symptoms — Treatment Companion{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <h1>How are you feeling today?</h1>
+  <p class="muted">Take your time. There are no wrong answers.</p>
+</section>
+
+<a href="{{ url_for('analyze_page') }}" class="ai-cta">
+  <span class="ai-cta-icon">✨</span>
+  <span>
+    <strong>Not in the mood for a form?</strong>
+    <span class="muted">Just describe how you feel — AI will fill it in for you.</span>
+  </span>
+  <span class="ai-cta-arrow">→</span>
+</a>
+
+<form method="post" action="{{ url_for('log_symptom') }}" class="card form-card">
+
+  <div class="field">
+    <label for="entry_date">Date</label>
+    <input type="date" id="entry_date" name="entry_date" required />
+  </div>
+
+  <div class="field">
+    <label>Overall severity</label>
+    <p class="muted small">How are you doing overall today?</p>
+    <div class="severity-scale">
+      {% for i in range(1, 6) %}
+        <label class="severity-option">
+          <input type="radio" name="severity" value="{{ i }}" {% if i == 1 %}checked{% endif %} />
+          <span class="dot dot-{{ i }}"></span>
+          <span class="label">{{ i }} — {{ severity_labels[i] }}</span>
+        </label>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Symptoms</label>
+    <p class="muted small">Rate each symptom from 1 (none) to 5 (very severe).</p>
+    <div class="symptoms-grid">
+      {% for symptom in common_symptoms %}
+        <div class="symptom-row">
+          <label for="symptom_{{ symptom }}">{{ symptom.replace('_', ' ').title() }}</label>
+          <select name="symptom_{{ symptom }}" id="symptom_{{ symptom }}">
+            <option value="">—</option>
+            {% for i in range(1, 6) %}
+              <option value="{{ i }}">{{ i }} — {{ severity_labels[i] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="notes">Notes</label>
+    <p class="muted small">Anything else on your mind? Sleep quality, appetite, worries.</p>
+    <textarea id="notes" name="notes" rows="4" placeholder="Optional notes..."></textarea>
+  </div>
+
+  <div class="form-actions">
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-primary">Save entry</button>
+  </div>
+</form>
+{% endblock %}

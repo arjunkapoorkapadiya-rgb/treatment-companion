@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Treatment Companion — Live Better</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body class="landing-body">
+
+  <!-- Background Video -->
+  <video class="bg-video" autoPlay muted loop playsInline>
+    <source src="{{ url_for('static', filename='bg-video.mp4') }}" type="video/mp4" />
+  </video>
+
+  <!-- Navbar -->
+  <nav class="landing-nav">
+    <a href="#" class="nav-logo">
+      <!-- Infinity Logo -->
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.739-8z"></path>
+      </svg>
+      <span>Treatment Companion</span>
+    </a>
+
+    <!-- Center Nav Pill -->
+    <div class="nav-pill liquid-glass">
+      <a href="#" class="nav-link active">Home</a>
+      <a href="#" class="nav-link">Features</a>
+      <a href="#" class="nav-link">Our Team</a>
+    </div>
+
+    <!-- Right CTAs -->
+    <div class="nav-ctas">
+      <a href="{{ url_for('log_symptom') }}" class="btn-glass liquid-glass">Log in</a>
+      <a href="{{ url_for('log_symptom') }}" class="btn-white">Begin Now</a>
+    </div>
+  </nav>
+
+  <!-- Hero Content (Bottom Left) -->
+  <section class="hero-content">
+    <h1>Live Better,<br>Feel Whole Every Day.</h1>
+    <p>Take charge of how you feel with a companion built for your journey—build routines, follow your growth, and unlock tailored insights for a steadier, more vibrant life each day.</p>
+    
+    <div class="btn-group">
+      <a href="{{ url_for('log_symptom') }}" class="btn-white">Start Today</a>
+      <a href="{{ url_for('analyze_page') }}" class="btn-glass liquid-glass">Discover AI</a>
+    </div>
+  </section>
+
+</body>
+</html>

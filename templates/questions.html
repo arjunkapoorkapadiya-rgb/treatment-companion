@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Questions — Treatment Companion{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <h1>Questions for your doctor</h1>
+  <p class="muted">Write them down now so you don't forget at your appointment.</p>
+</section>
+
+{# AI suggestion banner #}
+<form method="post" action="{{ url_for('generate_questions_route') }}" class="ai-cta-form">
+  <button type="submit" class="ai-cta ai-cta-btn">
+    <span class="ai-cta-icon">✨</span>
+    <span>
+      <strong>Generate questions from my symptom data</strong>
+      <span class="muted">AI reads your recent entries and suggests personalized questions.</span>
+    </span>
+    <span class="ai-cta-arrow">→</span>
+  </button>
+</form>
+
+{# AI suggestions #}
+{% if suggestions %}
+  <section class="card ai-result-card">
+    <div class="ai-badge">✨ AI-suggested questions</div>
+    {% if reasoning %}
+      <p class="muted small">{{ reasoning }}</p>
+    {% endif %}
+
+    <ul class="suggestion-list">
+      {% for s in suggestions %}
+        <li class="suggestion">
+          <span class="suggestion-text">{{ s }}</span>
+          <form method="post" action="{{ url_for('add_from_suggestion') }}" class="inline">
+            <input type="hidden" name="text" value="{{ s }}" />
+            <button type="submit" class="btn btn-tiny btn-primary">Add to my list</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <p class="muted small">Review before adding — these are suggestions, not medical advice.</p>
+  </section>
+{% endif %}
+
+{# Manual add form #}
+<form method="post" action="{{ url_for('questions_page') }}" class="card inline-form">
+  <input type="text" name="text" placeholder="Or type a question yourself..." required maxlength="500" />
+  <button type="submit" class="btn btn-primary">Add question</button>
+</form>
+
+<section class="card">
+  <h2>Pending ({{ questions | rejectattr('asked') | list | length }})</h2>
+  {% set pending = questions | rejectattr('asked') | list %}
+  {% if pending %}
+    <ul class="question-list">
+      {% for q in pending %}
+        <li class="question">
+          <span class="question-text">{{ q.text }}</span>
+          <div class="question-actions">
+            <form method="post" action="{{ url_for('toggle_question', q_id=q.id) }}" class="inline">
+              <button type="submit" class="btn btn-tiny">Mark asked</button>
+            </form>
+            <form method="post" action="{{ url_for('delete_question_route', q_id=q.id) }}" class="inline">
+              <button type="submit" class="btn btn-tiny btn-danger" onclick="return confirm('Remove this question?')">Delete</button>
+            </form>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted">No pending questions.</p>
+  {% endif %}
+</section>
+
+<section class="card">
+  <h2>Already asked</h2>
+  {% set asked = questions | selectattr('asked') | list %}
+  {% if asked %}
+    <ul class="question-list asked-list">
+      {% for q in asked %}
+        <li class="question asked">
+          <span class="question-text">{{ q.text }}</span>
+          <div class="question-actions">
+            <form method="post" action="{{ url_for('toggle_question', q_id=q.id) }}" class="inline">
+              <button type="submit" class="btn btn-tiny">Unask</button>
+            </form>
+            <form method="post" action="{{ url_for('delete_question_route', q_id=q.id) }}" class="inline">
+              <button type="submit" class="btn btn-tiny btn-danger" onclick="return confirm('Remove this question?')">Delete</button>
+            </form>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted">Nothing marked as asked yet.</p>
+  {% endif %}
+</section>
+{% endblock %}\
+# i love this app so much. it is so helpful to have a place to write down questions for my doctor and to have AI suggestions based on my symptom data. the interface is clean and easy to use, and I appreciate the ability to mark questions as asked or delete them. this has made my appointments much more productive.                                

@@ -1,0 +1,39 @@
+﻿{% extends "base.html" %}
+{% block title %}Join a Care Circle — Treatment Companion{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <h1>👋 Join a Care Circle</h1>
+  <p class="muted">Enter the 6-character code the patient shared with you.</p>
+</section>
+
+<form method="post" action="{{ url_for('caregiver_join') }}" class="card form-card">
+  <div class="field">
+    <label for="code">Circle code</label>
+    <input type="text" id="code" name="code" placeholder="ABC123" required maxlength="6"
+           style="text-transform: uppercase; letter-spacing: 4px; font-size: 24px; font-weight: 700; text-align: center;" />
+    <p class="muted small">6 letters/numbers, no spaces.</p>
+  </div>
+
+  <div class="field">
+    <label for="name">Your name</label>
+    <input type="text" id="name" name="name" placeholder="e.g., Sarah" required maxlength="80" />
+  </div>
+
+  <div class="field">
+    <label for="relation">Your relation (optional)</label>
+    <input type="text" id="relation" name="relation" placeholder="e.g., Daughter, Friend, Neighbor" maxlength="40" />
+  </div>
+
+  <div class="form-actions">
+    <a href="{{ url_for('caregiver_dashboard') }}" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-primary">Join circle</button>
+  </div>
+</form>
+
+<section class="card">
+  <p class="muted small">
+    <strong>Privacy note:</strong> By joining, you'll see the patient's symptom summaries and emergency status. You'll be able to leave encouraging notes and claim care tasks. The patient can remove you at any time.
+  </p>
+</section>
+{% endblock %}
