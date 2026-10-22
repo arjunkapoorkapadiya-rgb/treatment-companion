@@ -69,7 +69,7 @@ def log_symptom():
                 entry.symptoms[name] = SymptomEntry.validate_severity(val)
         storage.save_symptom(entry)
         flash("Entry saved. Take care of yourself today. ðŸ’š", "success")
-        return redirect(url_for("index"))
+        return redirect(request.path)
     return render_template(
         "log.html",
         common_symptoms=COMMON_SYMPTOMS,
@@ -81,7 +81,7 @@ def log_symptom():
 def delete_entry(entry_id):
     storage.delete_symptom(entry_id)
     flash("Entry deleted.", "info")
-    return redirect(url_for("index"))
+    return redirect(request.path)
 
 
 @app.route("/analyze", methods=["GET", "POST"])
@@ -100,7 +100,7 @@ def analyze_page():
                     entry.symptoms[name] = SymptomEntry.validate_severity(val)
             storage.save_symptom(entry)
             flash("Entry saved from AI analysis. ðŸ’š", "success")
-            return redirect(url_for("index"))
+            return redirect(request.path)
 
         raw_text = request.form.get("raw_text", "").strip()
         if not raw_text:
@@ -471,6 +471,23 @@ def caregiver_demo():
     return redirect(url_for("caregiver_view", code=circle["code"]))
 
 
+@app.route("/chat")
+def chat_page():
+    return render_template("chat.html")
+
+@app.route("/api/chat", methods=["POST"])
+def api_chat():
+    data = request.get_json()
+    user_message = data.get("message", "").strip()
+    history = data.get("history", [])
+    if not user_message:
+        return jsonify({"error": "Empty message"}), 400
+    try:
+        reply = ai_service.chat_with_ai(user_message, history)
+        return jsonify({"reply": reply})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 # ==== API ====
 
 @app.route("/api/transcribe", methods=["POST"])
@@ -521,3 +538,4 @@ def not_found(e):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+

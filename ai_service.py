@@ -216,3 +216,31 @@ def _build_data_summary(entries: list, trends: dict, insights: list) -> str:
     if not trends and not entries:
         lines.append("(No symptom data available yet.)")
     return "\n".join(lines)
+# ============================================================
+# CHAT WITH AI
+# ============================================================
+
+CHAT_SYSTEM_PROMPT = """You are the Treatment Companion AI, a compassionate medical assistant for cancer patients and their caregivers.
+Your goal is to provide clear, empathetic, and easy-to-understand information.
+RULES:
+1. NEVER diagnose the patient or prescribe medication.
+2. ALWAYS advise them to consult their oncology team for medical decisions.
+3. If they describe an emergency (chest pain, severe bleeding, fever), tell them to use the Emergency Checker immediately.
+4. Keep answers concise and comforting.
+5. If they ask something completely unrelated to health, politely say: "I am only here to support you with your health journey."
+"""
+
+def chat_with_ai(user_message: str, history: list = None) -> str:
+    if not GROQ_API_KEY:
+        raise RuntimeError("GROQ_API_KEY not set.")
+    messages = [{"role": "system", "content": CHAT_SYSTEM_PROMPT}]
+    if history:
+        for msg in history:
+            messages.append(msg)
+    messages.append({"role": "user", "content": user_message})
+    headers = {"Authorization": f"Bearer {GROQ_API_KEY}", "Content-Type": "application/json"}
+    body = {"model": CHAT_MODEL, "messages": messages, "temperature": 0.5, "max_tokens": 500}
+    response = requests.post(GROQ_CHAT_URL, headers=headers, json=body, timeout=30)
+    if response.status_code != 200:
+        raise RuntimeError(f"Groq API error: {response.text}")
+    return response.json()["choices"][0]["message"]["content"]

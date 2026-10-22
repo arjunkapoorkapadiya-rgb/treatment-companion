@@ -17,6 +17,7 @@
 
 /* THE MAGIC MASK - Hardware Accelerated */
 .spotlight-reveal {
+  will-change: mask-image;
   position: absolute;
   inset: 0;
   background: url('/static/bg-reveal.png') center/cover no-repeat;
@@ -72,3 +73,4 @@ body.has-spotlight .page-head h1,
 body.has-spotlight .page-head p {
   color: #fff !important;
 }
+
