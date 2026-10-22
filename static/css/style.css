@@ -334,3 +334,14 @@ main.container { padding-top: 48px; padding-bottom: 80px; }
 .site-nav a {
   white-space: nowrap;
 }
+
+/* Fix Navbar Overlap & Spacing */
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.site-nav a {
+  white-space: nowrap;
+}
