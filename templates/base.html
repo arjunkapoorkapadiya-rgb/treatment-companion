@@ -6,14 +6,12 @@
   <title>{% block title %}Treatment Companion{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   
-  <!-- Load Spotlight CSS ONLY on inner pages -->
   {% if request.endpoint != 'index' %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/spotlight.css') }}" />
   {% endif %}
 </head>
 <body class="{% if request.endpoint != 'index' %}has-spotlight{% endif %}">
 
-  <!-- Spotlight Background ONLY on inner pages -->
   {% if request.endpoint != 'index' %}
   <div class="spotlight-bg-container">
     <div class="spotlight-bg-base"></div>
@@ -25,21 +23,22 @@
   <header class="site-header">
     <div class="container header-inner">
       <a href="{{ url_for('index') }}" class="brand">
-        <span class="brand-mark">ðŸ’š</span>
+        <span class="brand-mark">💚</span>
         <span class="brand-text">Treatment Companion</span>
       </a>
       <nav class="site-nav">
         <a href="{{ url_for('index') }}">{{ t('home') }}</a>
         <a href="{{ url_for('log_symptom') }}">{{ t('log') }}</a>
-        <a href="{{ url_for('analyze_page') }}" class="nav-ai">âœ¨ {{ t('ai_log') }}</a>
-        <a href="{{ url_for('medications_page') }}">ðŸ’Š {{ t('meds') }}</a>
+        <a href="{{ url_for('analyze_page') }}" class="nav-ai">✨ {{ t('ai_log') }}</a>
+        <a href="{{ url_for('chat_page') }}" class="nav-ai">💬 Chat</a>
+        <a href="{{ url_for('medications_page') }}">💊 {{ t('meds') }}</a>
         <a href="{{ url_for('chart_page') }}">{{ t('trends') }}</a>
         <a href="{{ url_for('questions_page') }}">{{ t('questions') }}</a>
         <a href="{{ url_for('glossary_page') }}">{{ t('glossary') }}</a>
-        <a href="{{ url_for('caregiver_dashboard') }}">ðŸ‘¨â€ðŸ‘©â€ðŸ‘§ {{ t('care_circle') }}</a>
-        <a href="{{ url_for('emergency_page') }}" class="nav-emergency" title="{{ t('emergency') }}">ðŸš¨</a>
+        <a href="{{ url_for('caregiver_dashboard') }}">👨‍👩‍👧 {{ t('care_circle') }}</a>
+        <a href="{{ url_for('emergency_page') }}" class="nav-emergency" title="{{ t('emergency') }}">🚨</a>
         
-        <span style="margin-left: 10px; border-left: 1px solid #ccc; padding-left: 10px;">
+        <span style="margin-left: auto; border-left: 1px solid #ccc; padding-left: 12px;">
           <a href="{{ url_for('set_lang', lang='en') }}" style="{% if current_lang == 'en' %}font-weight: bold; text-decoration: underline;{% endif %}">{{ t('lang_en') }}</a> | 
           <a href="{{ url_for('set_lang', lang='hi') }}" style="{% if current_lang == 'hi' %}font-weight: bold; text-decoration: underline;{% endif %}">{{ t('lang_hi') }}</a>
         </span>
@@ -63,13 +62,13 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>Treatment Companion â€” a calm daily guide. This app does not replace medical advice.</p>
+      <p>Treatment Companion — a calm daily guide. This app does not replace medical advice.</p>
     </div>
   </footer>
 
-  <script src="{{ url_for('static', filename='js/app.js') }}"></script>`n  <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
   
-  <!-- Load Spotlight JS ONLY on inner pages -->
   {% if request.endpoint != 'index' %}
   <script src="{{ url_for('static', filename='js/spotlight.js') }}"></script>
   {% endif %}
