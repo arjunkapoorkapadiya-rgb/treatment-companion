@@ -62,6 +62,8 @@ def log_symptom():
             severity=SymptomEntry.validate_severity(request.form.get("severity", 1)),
             symptoms={},
             notes=request.form.get("notes", "").strip(),
+            temperature=request.form.get("temperature", "").strip(),
+            sleep_hours=request.form.get("sleep_hours", "").strip(),
         )
         for name in COMMON_SYMPTOMS:
             val = request.form.get(f"symptom_{name}")
@@ -93,6 +95,8 @@ def analyze_page():
                 severity=SymptomEntry.validate_severity(request.form.get("severity", 1)),
                 symptoms={},
                 notes=request.form.get("notes", "").strip(),
+            temperature=request.form.get("temperature", "").strip(),
+            sleep_hours=request.form.get("sleep_hours", "").strip(),
             )
             for name in COMMON_SYMPTOMS:
                 val = request.form.get(f"symptom_{name}")
@@ -488,6 +492,41 @@ def api_chat():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/chat")
+def chat_page():
+    return render_template("chat.html")
+
+@app.route("/api/chat", methods=["POST"])
+def api_chat():
+    data = request.get_json()
+    user_message = data.get("message", "").strip()
+    history = data.get("history", [])
+    if not user_message: return jsonify({"error": "Empty message"}), 400
+    try:
+        reply = ai_service.chat_with_ai(user_message, history)
+        return jsonify({"reply": reply})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/caregiver/<code>/sync-hospital", methods=["POST"])
+def caregiver_sync_hospital(code):
+    circle = caregiver.get_circle(code)
+    if circle:
+        import json, os
+        fhir_path = os.path.join(BASE_DIR, "data", "mock_fhir.json")
+        try:
+            with open(fhir_path, "r") as f: fhir_data = json.load(f)
+            count = 0
+            for entry in fhir_data.get("entry", []):
+                appt = entry.get("resource", {})
+                if appt.get("start") and appt.get("description"):
+                    caregiver.add_appointment(code, appt["start"], appt["description"], appt.get("location", ""))
+                    count += 1
+            flash(f"Synced {count} appointments from Epic MyChart (FHIR Demo)!", "success")
+        except Exception as e:
+            flash(f"Sync failed: {str(e)}", "error")
+    return redirect(request.path)
+
 # ==== API ====
 
 @app.route("/api/transcribe", methods=["POST"])
@@ -538,5 +577,6 @@ def not_found(e):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
 
 

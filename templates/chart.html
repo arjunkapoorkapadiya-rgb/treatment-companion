@@ -1,37 +1,24 @@
 ﻿{% extends "base.html" %}
 {% block title %}Trends — Treatment Companion{% endblock %}
 {% block content %}
-<section class="page-head">
-  <h1>Trends over the last 14 days</h1>
-  <p class="muted">A visual look at how you've been feeling.</p>
-</section>
-<section class="card">
-  <h2>Overall severity</h2>
-  <canvas id="severityChart" height="120"></canvas>
-</section>
-<section class="card">
-  <h2>Symptoms over time</h2>
-  <canvas id="symptomChart" height="140"></canvas>
-</section>
+<section class="page-head"><h1>Trends over the last 14 days</h1><p class="muted">A visual look at how you've been feeling.</p></section>
+<section class="card"><h2>Overall severity</h2><canvas id="severityChart" height="120"></canvas></section>
+<section class="card"><h2>Symptoms over time</h2><canvas id="symptomChart" height="140"></canvas></section>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   const data = {{ data | tojson }};
   document.addEventListener("DOMContentLoaded", function () {
     new Chart(document.getElementById("severityChart").getContext("2d"), {
-      type: 'line',
-      data: { labels: data.labels, datasets: [{ label: 'Overall Severity', data: data.severity, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', borderWidth: 2, tension: 0.1, pointRadius: 3, fill: true }] },
+      type: 'line', data: { labels: data.labels, datasets: [{ label: 'Overall Severity', data: data.severity, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', borderWidth: 2, tension: 0.1, pointRadius: 3, fill: true }] },
       options: { responsive: true, animation: false, scales: { y: { min: 0, max: 5, ticks: { stepSize: 1 } } } }
     });
     const colors = ["#10b981", "#6366f1", "#ef4444", "#f59e0b", "#8b5cf6", "#06b6d4", "#ec4899", "#84cc16"];
-    const datasets = [];
-    let i = 0;
+    const datasets = []; let i = 0;
     for (const [name, values] of Object.entries(data.symptoms)) {
-      datasets.push({ label: name.replace(/_/g, " "), data: values, borderColor: colors[i % colors.length], borderWidth: 2, tension: 0.1, pointRadius: 2, spanGaps: true });
-      i++;
+      datasets.push({ label: name.replace(/_/g, " "), data: values, borderColor: colors[i % colors.length], borderWidth: 2, tension: 0.1, pointRadius: 2, spanGaps: true }); i++;
     }
     new Chart(document.getElementById("symptomChart").getContext("2d"), {
-      type: 'line',
-      data: { labels: data.labels, datasets: datasets },
+      type: 'line', data: { labels: data.labels, datasets: datasets },
       options: { responsive: true, animation: false, interaction: { mode: 'index', intersect: false }, scales: { y: { min: 0, max: 5, ticks: { stepSize: 1 } } }, plugins: { legend: { position: 'bottom' } } }
     });
   });

@@ -1,19 +1,10 @@
 ﻿{% extends "base.html" %}
 {% block title %}Chat AI — Treatment Companion{% endblock %}
 {% block content %}
-<section class="page-head">
-  <h1>💬 Chat with Companion AI</h1>
-  <p class="muted">Ask questions about your health journey.</p>
-</section>
+<section class="page-head"><h1>💬 Chat with Companion AI</h1><p class="muted">Ask questions about your health journey.</p></section>
 <div class="card chat-container">
-  <div id="chatBox" class="chat-box">
-    <div class="chat-message ai-message">
-      <div class="chat-bubble">Hello! I am your Treatment Companion. How can I support you today?</div>
-    </div>
-  </div>
-  <form id="chatForm" class="chat-input-area">
-    <input type="text" id="chatInput" placeholder="Type your message here..." required autocomplete="off" />
-    <button type="submit" class="btn btn-primary">Send</button>
-  </form>
+  <div id="chatBox" class="chat-box"><div class="chat-message ai-message"><div class="chat-bubble">Hello! I am your Treatment Companion. How can I support you today?</div></div></div>
+  <form id="chatForm" class="chat-input-area"><input type="text" id="chatInput" placeholder="Type your message here..." required autocomplete="off" /><button type="submit" class="btn btn-primary">Send</button></form>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 {% endblock %}

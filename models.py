@@ -67,6 +67,8 @@ class SymptomEntry:
             severity=int(data.get("severity", 1)),
             symptoms=data.get("symptoms", {}),
             notes=data.get("notes", ""),
+            temperature=data.get("temperature", ""),
+            sleep_hours=data.get("sleep_hours", ""),
             questions=data.get("questions", []),
             created_at=data.get("created_at", datetime.utcnow().isoformat()),
         )
@@ -100,3 +102,4 @@ class QuestionEntry:
             asked=bool(data.get("asked", False)),
             created_at=data.get("created_at", datetime.utcnow().isoformat()),
         )
+

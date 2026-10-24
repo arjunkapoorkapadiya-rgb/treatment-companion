@@ -1,14 +1,14 @@
-{% extends "base.html" %}
-{% block title %}Care Circle — Treatment Companion{% endblock %}
+﻿{% extends "base.html" %}
+{% block title %}Care Circle â€” Treatment Companion{% endblock %}
 
 {% block content %}
 <section class="page-head">
-  <h1>👨‍👩‍👧 Care Circle</h1>
+  <h1>ðŸ‘¨â€ðŸ‘©â€ðŸ‘§ Care Circle</h1>
   <p class="muted">Invite family to support you. They can see your status, claim care tasks, and leave encouraging notes.</p>
 </section>
 
 {% if not circle %}
-  {# === No circle selected — show list + create form === #}
+  {# === No circle selected â€” show list + create form === #}
 
   {% if circles %}
     <section class="card">
@@ -22,7 +22,7 @@
                 <span class="chip">{{ c.code }}</span>
               </div>
               <span class="muted small">
-                {{ c.members | length }} members · {{ c.tasks | length }} tasks
+                {{ c.members | length }} members Â· {{ c.tasks | length }} tasks
               </span>
             </a>
           </li>
@@ -39,7 +39,7 @@
       <button type="submit" class="btn btn-primary">Create circle</button>
     </form>
     <p class="muted small" style="margin-top: 16px;">
-      Want to try a demo first? <a href="{{ url_for('caregiver_demo') }}">Create a demo circle →</a>
+      Want to try a demo first? <a href="{{ url_for('caregiver_demo') }}">Create a demo circle â†’</a>
     </p>
   </section>
 
@@ -50,7 +50,7 @@
   </section>
 
 {% else %}
-  {# === Circle selected — show full dashboard === #}
+  {# === Circle selected â€” show full dashboard === #}
 
   <div class="circle-header-card">
     <div class="circle-code-display">
@@ -82,7 +82,7 @@
           <li class="member-item">
             <div>
               <strong>{{ m.name }}</strong>
-              {% if m.relation %}<span class="muted small">· {{ m.relation }}</span>{% endif %}
+              {% if m.relation %}<span class="muted small">Â· {{ m.relation }}</span>{% endif %}
             </div>
             <form method="post" action="{{ url_for('caregiver_remove_member', code=circle.code, member_id=m.id) }}" class="inline">
               <button type="submit" class="btn btn-tiny btn-danger" onclick="return confirm('Remove {{ m.name }}?')">Remove</button>
@@ -107,7 +107,7 @@
   {# Tasks #}
   <section class="card">
     <h2>Care tasks ({{ circle.tasks | length }})</h2>
-    <p class="muted small">Things family can help with — drives, groceries, calls.</p>
+    <p class="muted small">Things family can help with â€” drives, groceries, calls.</p>
 
     <form method="post" action="{{ url_for('caregiver_add_task', code=circle.code) }}" class="inline-form" style="margin-bottom: 16px;">
       <input type="text" name="title" placeholder="What needs doing?" required maxlength="200" />
@@ -121,17 +121,17 @@
           <li class="task-item {% if t.done %}task-done{% endif %}">
             <form method="post" action="{{ url_for('caregiver_complete_task', code=circle.code, task_id=t.id) }}" class="inline">
               <button type="submit" class="task-checkbox" aria-label="Toggle done">
-                {% if t.done %}✓{% endif %}
+                {% if t.done %}âœ“{% endif %}
               </button>
             </form>
             <div class="task-body">
               <div class="task-title">{{ t.title }}</div>
               <div class="muted small">
-                {% if t.assigned_to %}👤 {{ t.assigned_to }}{% else %}unclaimed{% endif %}
+                {% if t.assigned_to %}ðŸ‘¤ {{ t.assigned_to }}{% else %}unclaimed{% endif %}
               </div>
             </div>
             <form method="post" action="{{ url_for('caregiver_delete_task', code=circle.code, task_id=t.id) }}" class="inline">
-              <button type="submit" class="btn btn-tiny btn-danger" onclick="return confirm('Delete task?')">×</button>
+              <button type="submit" class="btn btn-tiny btn-danger" onclick="return confirm('Delete task?')">Ã—</button>
             </form>
           </li>
         {% endfor %}
@@ -159,10 +159,10 @@
             <div class="appt-date">{{ a.date }}</div>
             <div class="appt-body">
               <strong>{{ a.title }}</strong>
-              {% if a.location %}<div class="muted small">📍 {{ a.location }}</div>{% endif %}
+              {% if a.location %}<div class="muted small">ðŸ“ {{ a.location }}</div>{% endif %}
             </div>
             <form method="post" action="{{ url_for('caregiver_delete_appt', code=circle.code, appt_id=a.id) }}" class="inline">
-              <button type="submit" class="btn btn-tiny btn-danger" onclick="return confirm('Delete appointment?')">×</button>
+              <button type="submit" class="btn btn-tiny btn-danger" onclick="return confirm('Delete appointment?')">Ã—</button>
             </form>
           </li>
         {% endfor %}
@@ -193,7 +193,7 @@
             </div>
             <div class="note-text">{{ n.text }}</div>
             <form method="post" action="{{ url_for('caregiver_delete_note', code=circle.code, note_id=n.id) }}" class="inline note-delete">
-              <button type="submit" class="btn btn-tiny btn-danger" onclick="return confirm('Delete note?')">×</button>
+              <button type="submit" class="btn btn-tiny btn-danger" onclick="return confirm('Delete note?')">Ã—</button>
             </form>
           </li>
         {% endfor %}
@@ -205,7 +205,7 @@
 
   <section class="card">
     <a href="{{ url_for('caregiver_view', code=circle.code) }}" class="btn btn-secondary">
-      👁️ Preview family view →
+      ðŸ‘ï¸ Preview family view â†’
     </a>
   </section>
 
