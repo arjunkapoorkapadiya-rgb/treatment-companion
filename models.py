@@ -1,4 +1,4 @@
-"""
+﻿"""
 Data models for Treatment Companion.
 
 Every symptom entry is one row of the patient's daily log.
@@ -27,10 +27,10 @@ COMMON_SYMPTOMS = [
 # Severity levels for the 1-5 scale.
 SEVERITY_LABELS = {
     1: "None",
-    2: "Mild",
-    3: "Moderate",
-    4: "Severe",
-    5: "Very Severe",
+    2: "Mild (noticeable, but doesn't interfere)",
+    3: "Moderate (interferes with daily tasks)",
+    4: "Severe (limits self-care)",
+    5: "Very Severe (unable to function)",
 }
 
 
