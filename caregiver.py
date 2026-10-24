@@ -1,3 +1,4 @@
+from datetime import timedelta
 """
 Care Circle — multi-user caregiver hub.
 
@@ -349,6 +350,6 @@ def create_demo_circle() -> dict:
         claim_task(code, t1["id"], "Sarah")
 
     add_appointment(code, "2026-10-20", "Chemo Session #4", "City Cancer Center, 2nd floor")
-    add_appointment(code, "2026-10-28", "Follow-up with Dr. Patel", "Telehealth")
+    add_appointment(code, (datetime.now() + timedelta(days=14)).strftime("%Y-%m-%d"), "Follow-up with Dr. Patel", "Telehealth")
 
     return get_circle(code)

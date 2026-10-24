@@ -5,3 +5,5 @@ __pycache__/
 data/*.json
 !data/glossary.json
 *.log
+backup-*/
+caregiver_syntax_*.txt

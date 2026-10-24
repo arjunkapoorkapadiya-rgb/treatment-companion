@@ -1,52 +1,40 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Treatment Companion — Live Better</title>
+  <title>Treatment Companion — Cancer Support</title>
+  <meta name="description" content="Track symptoms, prepare for appointments, and coordinate caregiver support during cancer treatment." />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body class="landing-body">
-
-  <!-- Background Video -->
   <video class="bg-video" autoPlay muted loop playsInline>
     <source src="{{ url_for('static', filename='bg-video.mp4') }}" type="video/mp4" />
   </video>
-
-  <!-- Navbar -->
   <nav class="landing-nav">
     <a href="#" class="nav-logo">
-      <!-- Infinity Logo -->
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.739-8z"></path>
+      <svg width="32" height="32" viewBox="0 0 256 256" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 128 128 C 198.692 128 256 185.308 256 256 L 151.883 256 C 149.812 220.307 120.213 192 84 192 C 47.787 192 18.188 220.307 16.117 256 L 0 256 C 0 185.308 57.308 128 128 128 Z M 104.117 0 C 106.188 35.694 135.787 64 172 64 C 208.213 64 237.812 35.694 239.883 0 L 256 0 C 256 70.692 198.692 128 128 128 C 57.308 128 0 70.692 0 0 Z" />
       </svg>
       <span>Treatment Companion</span>
     </a>
-
-    <!-- Center Nav Pill -->
     <div class="nav-pill liquid-glass">
-      <a href="#" class="nav-link active">Home</a>
-      <a href="#" class="nav-link">Features</a>
-      <a href="#" class="nav-link">Our Team</a>
+      <a href="#features" class="nav-link active">Features</a>
+      <a href="#how-it-works" class="nav-link">How it Works</a>
+      <a href="#team" class="nav-link">Our Team</a>
     </div>
-
-    <!-- Right CTAs -->
     <div class="nav-ctas">
-      <a href="{{ url_for('log_symptom') }}" class="btn-glass liquid-glass">Log in</a>
-      <a href="{{ url_for('log_symptom') }}" class="btn-white">Begin Now</a>
+      <a href="{{ url_for('log_symptom') }}" class="btn-white">Explore the demo</a>
     </div>
   </nav>
-
-  <!-- Hero Content (Bottom Left) -->
   <section class="hero-content">
-    <h1>Live Better,<br>Feel Whole Every Day.</h1>
-    <p>Take charge of how you feel with a companion built for your journey—build routines, follow your growth, and unlock tailored insights for a steadier, more vibrant life each day.</p>
-    
+    <h1 style="font-size: 48px; line-height: 1.1;">Cancer treatment is hard enough.<br>Keeping track shouldn't be.</h1>
+    <p style="max-width: 640px; font-size: 18px;">Track symptoms, organize medication information, prepare questions for your care team, and coordinate support with the people you trust — all in one place.</p>
     <div class="btn-group">
-      <a href="{{ url_for('log_symptom') }}" class="btn-white">Start Today</a>
-      <a href="{{ url_for('analyze_page') }}" class="btn-glass liquid-glass">Discover AI</a>
+      <a href="{{ url_for('log_symptom') }}" class="btn-white">Start Tracking</a>
+      <a href="{{ url_for('chat_page') }}" class="btn-glass liquid-glass">See how it works</a>
     </div>
+    <p class="muted small" style="max-width: 640px; margin-top: 1.5rem;">Treatment Companion helps you organize your care journey. It does not diagnose cancer, prescribe treatment, or replace your clinicians. In an emergency, call your local emergency number.</p>
   </section>
-
 </body>
 </html>

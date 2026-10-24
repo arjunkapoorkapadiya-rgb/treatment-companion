@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% block title %}{{ circle.patient_name }}'s Care Circle{% endblock %}
 
 {% block content %}
@@ -115,7 +115,7 @@
 
 <div class="card">
   <p class="muted small center">
-    This is a read-only view. The patient controls who's in the circle.<br>
+    Family members can claim tasks and leave notes for the patient. The patient controls who's in the circle.<br>
     <a href="{{ url_for('caregiver_dashboard') }}">← Back to care circle home</a>
   </p>
 </div>
