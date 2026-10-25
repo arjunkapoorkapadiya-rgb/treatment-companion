@@ -28,7 +28,7 @@ def inject_translations():
     )
 
 
-@app.route("/set-lang/<lang>", endpoint="route_endpoint_31")
+@app.route("/set-lang/<lang>")
 def set_lang(lang):
     """Toggle language and redirect back."""
     if lang in ["en", "hi"]:
@@ -38,7 +38,7 @@ def set_lang(lang):
 
 # ==== Pages ====
 
-@app.route("/", endpoint="route_endpoint_41")
+@app.route("/")
 def index():
     entries = storage.recent_entries(days=14)
     insights = storage.pattern_insights(days=14)
@@ -54,7 +54,7 @@ def index():
     )
 
 
-@app.route("/log", methods=["GET", "POST"], endpoint="route_endpoint_57")
+@app.route("/log", methods=["GET", "POST"])
 def log_symptom():
     if request.method == "POST":
         entry = SymptomEntry(
@@ -79,14 +79,14 @@ def log_symptom():
     )
 
 
-@app.route("/entry/<entry_id>/delete", methods=["POST"], endpoint="route_endpoint_82")
+@app.route("/entry/<entry_id>/delete", methods=["POST"])
 def delete_entry(entry_id):
     storage.delete_symptom(entry_id)
     flash("Entry deleted.", "info")
     return redirect(request.path)
 
 
-@app.route("/analyze", methods=["GET", "POST"], endpoint="route_endpoint_89")
+@app.route("/analyze", methods=["GET", "POST"])
 def analyze_page():
     if request.method == "POST":
         if request.form.get("confirm") == "yes":
@@ -139,7 +139,7 @@ def analyze_page():
     )
 
 
-@app.route("/questions", methods=["GET", "POST"], endpoint="route_endpoint_142")
+@app.route("/questions", methods=["GET", "POST"])
 def questions_page():
     if request.method == "POST":
         text = request.form.get("text", "").strip()
@@ -155,7 +155,7 @@ def questions_page():
     )
 
 
-@app.route("/questions/generate", methods=["POST"], endpoint="route_endpoint_158")
+@app.route("/questions/generate", methods=["POST"])
 def generate_questions_route():
     try:
         entries = storage.recent_entries(days=14)
@@ -173,7 +173,7 @@ def generate_questions_route():
         return redirect(url_for("questions_page"))
 
 
-@app.route("/questions/<q_id>/toggle", methods=["POST"], endpoint="route_endpoint_176")
+@app.route("/questions/<q_id>/toggle", methods=["POST"])
 def toggle_question(q_id):
     for q in storage.list_questions():
         if q.id == q_id:
@@ -183,14 +183,14 @@ def toggle_question(q_id):
     return redirect(url_for("questions_page"))
 
 
-@app.route("/questions/<q_id>/delete", methods=["POST"], endpoint="route_endpoint_186")
+@app.route("/questions/<q_id>/delete", methods=["POST"])
 def delete_question_route(q_id):
     storage.delete_question(q_id)
     flash("Question removed.", "info")
     return redirect(url_for("questions_page"))
 
 
-@app.route("/questions/add-from-suggestion", methods=["POST"], endpoint="route_endpoint_193")
+@app.route("/questions/add-from-suggestion", methods=["POST"])
 def add_from_suggestion():
     text = request.form.get("text", "").strip()
     if text:
@@ -199,7 +199,7 @@ def add_from_suggestion():
     return redirect(url_for("questions_page"))
 
 
-@app.route("/print", endpoint="route_endpoint_202")
+@app.route("/print")
 def print_summary():
     from datetime import date
     entries = storage.recent_entries(days=14)
@@ -215,7 +215,7 @@ def print_summary():
     )
 
 
-@app.route("/glossary", endpoint="route_endpoint_218")
+@app.route("/glossary")
 def glossary_page():
     query = request.args.get("q", "").strip()
     category = request.args.get("category", "").strip() or None
@@ -230,13 +230,13 @@ def glossary_page():
     )
 
 
-@app.route("/chart", endpoint="route_endpoint_233")
+@app.route("/chart")
 def chart_page():
     data = storage.severity_series(days=14)
     return render_template("chart.html", data=data)
 
 
-@app.route("/emergency", methods=["GET", "POST"], endpoint="route_endpoint_239")
+@app.route("/emergency", methods=["GET", "POST"])
 def emergency_page():
     groups = storage.list_emergency_groups()
     all_symptoms = storage.all_emergency_symptom_keys()
@@ -256,7 +256,7 @@ def emergency_page():
 
 # ==== Medications ====
 
-@app.route("/medications", endpoint="route_endpoint_259")
+@app.route("/medications")
 def medications_page():
     meds = medications.list_medications()
     summary = medications.today_summary()
@@ -270,7 +270,7 @@ def medications_page():
     )
 
 
-@app.route("/medications/add", methods=["POST"], endpoint="route_endpoint_273")
+@app.route("/medications/add", methods=["POST"])
 def medications_add():
     name = request.form.get("name", "").strip()
     dose = request.form.get("dose", "").strip()
@@ -284,20 +284,20 @@ def medications_add():
     return redirect(url_for("medications_page"))
 
 
-@app.route("/medications/<med_id>/toggle", methods=["POST"], endpoint="route_endpoint_287")
+@app.route("/medications/<med_id>/toggle", methods=["POST"])
 def medications_toggle(med_id):
     medications.toggle_dose_taken(med_id)
     return redirect(url_for("medications_page"))
 
 
-@app.route("/medications/<med_id>/delete", methods=["POST"], endpoint="route_endpoint_293")
+@app.route("/medications/<med_id>/delete", methods=["POST"])
 def medications_delete(med_id):
     medications.delete_medication(med_id)
     flash("Medication removed.", "info")
     return redirect(url_for("medications_page"))
 
 
-@app.route("/medications/<med_id>/reactivate", methods=["POST"], endpoint="route_endpoint_300")
+@app.route("/medications/<med_id>/reactivate", methods=["POST"])
 def medications_reactivate(med_id):
     medications.toggle_active(med_id)
     flash("Medication reactivated.", "success")
@@ -306,7 +306,7 @@ def medications_reactivate(med_id):
 
 # ==== Caregiver / Care Circle ====
 
-@app.route("/caregiver", endpoint="route_endpoint_309")
+@app.route("/caregiver")
 def caregiver_dashboard():
     circles = caregiver.list_circles()
     return render_template(
@@ -317,7 +317,7 @@ def caregiver_dashboard():
     )
 
 
-@app.route("/caregiver/create", methods=["POST"], endpoint="route_endpoint_320")
+@app.route("/caregiver/create", methods=["POST"])
 def caregiver_create():
     patient_name = request.form.get("patient_name", "").strip()
     circle = caregiver.create_circle(patient_name)
@@ -325,7 +325,7 @@ def caregiver_create():
     return redirect(url_for("caregiver_circle", code=circle["code"]))
 
 
-@app.route("/caregiver/<code>", endpoint="route_endpoint_328")
+@app.route("/caregiver/<code>")
 def caregiver_circle(code):
     circle = caregiver.get_circle(code)
     if not circle:
@@ -340,7 +340,7 @@ def caregiver_circle(code):
     )
 
 
-@app.route("/caregiver/<code>/add-member", methods=["POST"], endpoint="route_endpoint_343")
+@app.route("/caregiver/<code>/add-member", methods=["POST"])
 def caregiver_add_member(code):
     name = request.form.get("name", "").strip()
     relation = request.form.get("relation", "").strip()
@@ -350,14 +350,14 @@ def caregiver_add_member(code):
     return redirect(url_for("caregiver_circle", code=code))
 
 
-@app.route("/caregiver/<code>/remove-member/<member_id>", methods=["POST"], endpoint="route_endpoint_353")
+@app.route("/caregiver/<code>/remove-member/<member_id>", methods=["POST"])
 def caregiver_remove_member(code, member_id):
     caregiver.remove_member(code, member_id)
     flash("Member removed.", "info")
     return redirect(url_for("caregiver_circle", code=code))
 
 
-@app.route("/caregiver/<code>/add-task", methods=["POST"], endpoint="route_endpoint_360")
+@app.route("/caregiver/<code>/add-task", methods=["POST"])
 def caregiver_add_task(code):
     title = request.form.get("title", "").strip()
     created_by = request.form.get("created_by", "Patient").strip()
@@ -367,20 +367,20 @@ def caregiver_add_task(code):
     return redirect(url_for("caregiver_circle", code=code))
 
 
-@app.route("/caregiver/<code>/task/<task_id>/complete", methods=["POST"], endpoint="route_endpoint_370")
+@app.route("/caregiver/<code>/task/<task_id>/complete", methods=["POST"])
 def caregiver_complete_task(code, task_id):
     caregiver.complete_task(code, task_id)
     return redirect(url_for("caregiver_circle", code=code))
 
 
-@app.route("/caregiver/<code>/task/<task_id>/delete", methods=["POST"], endpoint="route_endpoint_376")
+@app.route("/caregiver/<code>/task/<task_id>/delete", methods=["POST"])
 def caregiver_delete_task(code, task_id):
     caregiver.delete_task(code, task_id)
     flash("Task removed.", "info")
     return redirect(url_for("caregiver_circle", code=code))
 
 
-@app.route("/caregiver/<code>/add-appointment", methods=["POST"], endpoint="route_endpoint_383")
+@app.route("/caregiver/<code>/add-appointment", methods=["POST"])
 def caregiver_add_appt(code):
     date = request.form.get("date", "").strip()
     title = request.form.get("title", "").strip()
@@ -391,14 +391,14 @@ def caregiver_add_appt(code):
     return redirect(url_for("caregiver_circle", code=code))
 
 
-@app.route("/caregiver/<code>/appointment/<appt_id>/delete", methods=["POST"], endpoint="route_endpoint_394")
+@app.route("/caregiver/<code>/appointment/<appt_id>/delete", methods=["POST"])
 def caregiver_delete_appt(code, appt_id):
     caregiver.delete_appointment(code, appt_id)
     flash("Appointment removed.", "info")
     return redirect(url_for("caregiver_circle", code=code))
 
 
-@app.route("/caregiver/<code>/add-note", methods=["POST"], endpoint="route_endpoint_401")
+@app.route("/caregiver/<code>/add-note", methods=["POST"])
 def caregiver_add_note(code):
     text = request.form.get("text", "").strip()
     author = request.form.get("author", "Patient").strip()
@@ -408,14 +408,14 @@ def caregiver_add_note(code):
     return redirect(url_for("caregiver_circle", code=code))
 
 
-@app.route("/caregiver/<code>/note/<note_id>/delete", methods=["POST"], endpoint="route_endpoint_411")
+@app.route("/caregiver/<code>/note/<note_id>/delete", methods=["POST"])
 def caregiver_delete_note(code, note_id):
     caregiver.delete_note(code, note_id)
     flash("Note removed.", "info")
     return redirect(url_for("caregiver_circle", code=code))
 
 
-@app.route("/caregiver/join", methods=["GET", "POST"], endpoint="route_endpoint_418")
+@app.route("/caregiver/join", methods=["GET", "POST"])
 def caregiver_join():
     if request.method == "POST":
         code = request.form.get("code", "").strip().upper()
@@ -431,7 +431,7 @@ def caregiver_join():
     return render_template("caregiver_join.html")
 
 
-@app.route("/caregiver/<code>/view", endpoint="route_endpoint_434")
+@app.route("/caregiver/<code>/view")
 def caregiver_view(code):
     circle = caregiver.get_circle(code)
     if not circle:
@@ -445,7 +445,7 @@ def caregiver_view(code):
     )
 
 
-@app.route("/caregiver/<code>/leave-note", methods=["POST"], endpoint="route_endpoint_448")
+@app.route("/caregiver/<code>/leave-note", methods=["POST"])
 def caregiver_leave_note(code):
     text = request.form.get("text", "").strip()
     author = request.form.get("author", "").strip()
@@ -457,7 +457,7 @@ def caregiver_leave_note(code):
     return redirect(url_for("caregiver_view", code=code))
 
 
-@app.route("/caregiver/<code>/claim-task/<task_id>", methods=["POST"], endpoint="route_endpoint_460")
+@app.route("/caregiver/<code>/claim-task/<task_id>", methods=["POST"])
 def caregiver_claim_task(code, task_id):
     member_name = request.form.get("member_name", "").strip()
     if member_name:
@@ -468,18 +468,18 @@ def caregiver_claim_task(code, task_id):
     return redirect(url_for("caregiver_view", code=code))
 
 
-@app.route("/caregiver/demo", endpoint="route_endpoint_471")
+@app.route("/caregiver/demo")
 def caregiver_demo():
     circle = caregiver.create_demo_circle()
     flash(f"Demo circle created! Code: {circle['code']}", "success")
     return redirect(url_for("caregiver_view", code=circle["code"]))
 
 
-@app.route("/chat", endpoint="route_endpoint_478")
+@app.route("/chat")
 def chat_page():
     return render_template("chat.html")
 
-@app.route("/api/chat", methods=["POST"], endpoint="route_endpoint_482")
+@app.route("/api/chat", methods=["POST"])
 def api_chat():
     data = request.get_json()
     user_message = data.get("message", "").strip()
@@ -492,11 +492,11 @@ def api_chat():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route("/chat", endpoint="route_endpoint_495")
+@app.route("/chat")
 def chat_page_duplicate():
     return render_template("chat.html")
 
-@app.route("/api/chat", methods=["POST"], endpoint="route_endpoint_499")
+@app.route("/api/chat", methods=["POST"])
 def api_chat():
     data = request.get_json()
     user_message = data.get("message", "").strip()
@@ -508,7 +508,7 @@ def api_chat():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route("/caregiver/<code>/sync-hospital", methods=["POST"], endpoint="route_endpoint_511")
+@app.route("/caregiver/<code>/sync-hospital", methods=["POST"])
 def caregiver_sync_hospital(code):
     circle = caregiver.get_circle(code)
     if circle:
@@ -529,7 +529,7 @@ def caregiver_sync_hospital(code):
 
 # ==== API ====
 
-@app.route("/api/transcribe", methods=["POST"], endpoint="route_endpoint_532")
+@app.route("/api/transcribe", methods=["POST"])
 def api_transcribe():
     if "audio" not in request.files:
         return jsonify({"error": "no audio file provided"}), 400
@@ -545,22 +545,22 @@ def api_transcribe():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route("/api/symptoms", endpoint="route_endpoint_548")
+@app.route("/api/symptoms")
 def api_symptoms():
     return jsonify([e.to_dict() for e in storage.list_symptoms()])
 
 
-@app.route("/api/insights", endpoint="route_endpoint_553")
+@app.route("/api/insights")
 def api_insights():
     return jsonify(storage.pattern_insights(days=14))
 
 
-@app.route("/api/series", endpoint="route_endpoint_558")
+@app.route("/api/series")
 def api_series():
     return jsonify(storage.severity_series(days=14))
 
 
-@app.route("/api/health", endpoint="route_endpoint_563")
+@app.route("/api/health")
 def api_health():
     return jsonify({"status": "ok", "service": "treatment-companion"})
 
@@ -585,3 +585,4 @@ import os
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+
