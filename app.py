@@ -1,4 +1,5 @@
-﻿import os
+from care_tools import care_tools_bp
+import os
 """
 Treatment Companion &mdash; Flask app.
 """

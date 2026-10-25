@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .ct-container { max-width: 800px; margin: 0 auto; padding: 20px; font-family: 'Geist', sans-serif; color: #fff; }
+    .ct-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+    .ct-btn { background: #10b981; color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px;}
+    .ct-btn:hover { background: #059669; }
+    .ct-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #444; background: #222; color: white; }
+    .ct-timeline-item { border-left: 2px solid #10b981; padding-left: 15px; margin-bottom: 15px; position: relative; }
+    .ct-timeline-item::before { content: ''; position: absolute; left: -6px; top: 0; width: 10px; height: 10px; border-radius: 50%; background: #10b981; }
+    .ct-badge { background: #3b82f6; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; }
+    .ct-badge.upcoming { background: #f59e0b; }
+    .hi-text { font-size: 0.85em; color: #aaa; display: block; margin-top: 4px; }
+    .linked-ref { background: rgba(59, 130, 246, 0.1); border: 1px dashed #3b82f6; padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9em; }
+</style>
+<div class="ct-container">
+    <h1>Care Passport <span class="hi-text">देखभाल पासपोर्ट</span></h1>
+    <a href="{{ url_for('care_tools.index') }}" style="color: #10b981; margin-bottom: 20px; display: block;">&larr; Back to Care Tools</a>
+    <p class="muted">This is patient-reported information.</p>
+
+    <div class="ct-card">
+        <form method="POST">
+            <label>Preferred Name</label>
+            <input type="text" name="name" value="{{ passport.name }}" class="ct-input">
+            
+            <label>Emergency Contact & Care Team</label>
+            <textarea name="contacts" class="ct-input" rows="3">{{ passport.contacts }}</textarea>
+            
+            <label>Allergies (Type "None" if no known allergies)</label>
+            <input type="text" name="allergies" value="{{ passport.allergies }}" class="ct-input">
+            
+            <label>Communication Needs / Language</label>
+            <input type="text" name="language" value="{{ passport.language }}" class="ct-input">
+            
+            <button type="submit" class="ct-btn">Save Passport</button>
+        </form>
+    </div>
+
+    <div class="ct-card" style="border: 2px dashed #10b981;">
+        <h3>Current Medications (Read-Only Adapter)</h3>
+        <ul>
+            {% for med in medications %}
+            <li>{{ med.name if med.name else med }} - {{ med.dose if med.dose else '' }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <button onclick="window.print()" class="ct-btn" style="background: #3b82f6;">🖨️ Print Passport</button>
+</div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .ct-container { max-width: 800px; margin: 0 auto; padding: 20px; font-family: 'Geist', sans-serif; color: #fff; }
+    .ct-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+    .ct-btn { background: #10b981; color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px;}
+    .ct-btn:hover { background: #059669; }
+    .ct-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #444; background: #222; color: white; }
+    .ct-timeline-item { border-left: 2px solid #10b981; padding-left: 15px; margin-bottom: 15px; position: relative; }
+    .ct-timeline-item::before { content: ''; position: absolute; left: -6px; top: 0; width: 10px; height: 10px; border-radius: 50%; background: #10b981; }
+    .ct-badge { background: #3b82f6; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; }
+    .ct-badge.upcoming { background: #f59e0b; }
+    .hi-text { font-size: 0.85em; color: #aaa; display: block; margin-top: 4px; }
+    .linked-ref { background: rgba(59, 130, 246, 0.1); border: 1px dashed #3b82f6; padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9em; }
+</style>
+<div class="ct-container">
+    <h1>Treatment Journey <span class="hi-text">उपचार यात्रा</span></h1>
+    <a href="{{ url_for('care_tools.index') }}" style="color: #10b981; margin-bottom: 20px; display: block;">&larr; Back to Care Tools</a>
+    
+    {% if linked_appointments %}
+    <div class="ct-card">
+        <h3>Linked Care Circle Appointments</h3>
+        <p class="muted small">Read-only references from your existing appointments.</p>
+        {% for appt in linked_appointments %}
+        <div class="linked-ref">
+            <strong>{{ appt.title if appt.title else 'Appointment' }}</strong> - {{ appt.date }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if upcoming %}
+    <div class="ct-card" style="border-color: #f59e0b;">
+        <h3>Next Up: {{ upcoming.title }}</h3>
+        <p>{{ upcoming.date }} at {{ upcoming.location }}</p>
+    </div>
+    {% endif %}
+
+    <div class="ct-card">
+        <h3>Add Event <span class="hi-text">ईवेंट जोड़ें</span></h3>
+        <form method="POST">
+            <input type="text" name="title" placeholder="Event Title (e.g., MRI Scan)" class="ct-input" required>
+            <select name="type" class="ct-input">
+                <option value="Scan">Scan</option>
+                <option value="Treatment">Treatment</option>
+                <option value="Milestone">Milestone</option>
+            </select>
+            <input type="date" name="date" class="ct-input" required>
+            <input type="text" name="location" placeholder="Location" class="ct-input">
+            <select name="status" class="ct-input">
+                <option value="Planned">Planned</option>
+                <option value="Completed">Completed</option>
+            </select>
+            <button type="submit" class="ct-btn">Add to Timeline</button>
+        </form>
+    </div>
+
+    <div class="ct-card">
+        <h3>Timeline</h3>
+        {% for event in events %}
+        <div class="ct-timeline-item">
+            <h4>{{ event.title }} <span class="ct-badge {{ 'upcoming' if event.status == 'Planned' else '' }}">{{ event.status }}</span></h4>
+            <p>{{ event.date }} | {{ event.location }}</p>
+            <small>{{ event.notes }}</small>
+            <a href="{{ url_for('care_tools.delete_journey', id=event.id) }}" style="color: #ef4444; font-size: 0.8em; display: block; margin-top: 5px;">Delete</a>
+        </div>
+        {% else %}
+        <p>No events recorded yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
