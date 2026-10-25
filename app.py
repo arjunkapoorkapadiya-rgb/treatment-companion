@@ -1,6 +1,6 @@
-import os
+﻿import os
 """
-Treatment Companion — Flask app.
+Treatment Companion â€” Flask app.
 """
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash, session
@@ -70,7 +70,7 @@ def log_symptom():
             if val:
                 entry.symptoms[name] = SymptomEntry.validate_severity(val)
         storage.save_symptom(entry)
-        flash("Entry saved. Take care of yourself today. 💚", "success")
+        flash("Entry saved. Take care of yourself today. ðŸ’š", "success")
         return redirect(request.path)
     return render_template(
         "log.html",
@@ -103,7 +103,7 @@ def analyze_page():
                 if val:
                     entry.symptoms[name] = SymptomEntry.validate_severity(val)
             storage.save_symptom(entry)
-            flash("Entry saved from AI analysis. 💚", "success")
+            flash("Entry saved from AI analysis. ðŸ’š", "success")
             return redirect(request.path)
 
         raw_text = request.form.get("raw_text", "").strip()
@@ -493,7 +493,7 @@ def api_chat():
         return jsonify({"error": str(e)}), 500
 
 @app.route("/chat")
-def chat_page():
+def chat_page_duplicate():
     return render_template("chat.html")
 
 @app.route("/api/chat", methods=["POST"])
