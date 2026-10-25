@@ -497,7 +497,7 @@ def chat_page_duplicate():
     return render_template("chat.html")
 
 @app.route("/api/chat", methods=["POST"])
-def api_chat():
+def api_chat_v2():
     data = request.get_json()
     user_message = data.get("message", "").strip()
     history = data.get("history", [])
