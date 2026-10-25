@@ -25,7 +25,7 @@ def save_data(data):
 
 @care_tools_bp.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('ct_index.html')
 
 @care_tools_bp.route('/journey', methods=['GET', 'POST'])
 def journey():
@@ -57,7 +57,7 @@ def journey():
     today = datetime.now().strftime('%Y-%m-%d')
     upcoming = next((e for e in data['journey'] if e['date'] >= today and e['status'] == 'Planned'), None)
     
-    return render_template('journey.html', events=data['journey'], upcoming=upcoming, linked_appointments=linked_appointments)
+    return render_template('ct_journey.html', events=data['journey'], upcoming=upcoming, linked_appointments=linked_appointments)
 
 @care_tools_bp.route('/journey/delete/<id>')
 def delete_journey(id):
@@ -92,7 +92,7 @@ def visits():
         except Exception:
             pass
 
-    return render_template('visits.html', visits=data['visits'], questions=existing_questions)
+    return render_template('ct_visits.html', visits=data['visits'], questions=existing_questions)
 
 @care_tools_bp.route('/passport', methods=['GET', 'POST'])
 def passport():
@@ -120,4 +120,4 @@ def passport():
     if not current_meds:
         current_meds = [{"name": "Demo Med A", "dose": "10mg"}, {"name": "Demo Med B", "dose": "5mg"}]
         
-    return render_template('passport.html', passport=data['passport'], medications=current_meds)
+    return render_template('ct_passport.html', passport=data['passport'], medications=current_meds)
