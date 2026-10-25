@@ -2,64 +2,30 @@
 {% block content %}
 <style>
     .ct-container { max-width: 800px; margin: 0 auto; padding: 20px; font-family: 'Geist', sans-serif; color: #fff; }
-    .ct-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
-    .ct-btn { background: #10b981; color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px;}
-    .ct-btn:hover { background: #059669; }
-    .ct-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #444; background: #222; color: white; }
-    .ct-timeline-item { border-left: 2px solid #10b981; padding-left: 15px; margin-bottom: 15px; position: relative; }
-    .ct-timeline-item::before { content: ''; position: absolute; left: -6px; top: 0; width: 10px; height: 10px; border-radius: 50%; background: #10b981; }
-    .ct-badge { background: #3b82f6; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; }
-    .ct-badge.upcoming { background: #f59e0b; }
-    .hi-text { font-size: 0.85em; color: #aaa; display: block; margin-top: 4px; }
-    .linked-ref { background: rgba(59, 130, 246, 0.1); border: 1px dashed #3b82f6; padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9em; }
-    /* --- CONTRAST FIX --- */
-    .ct-container h1, 
-    .ct-container h2, 
-    .ct-container h3, 
-    .ct-container h4, 
-    .ct-container p, 
-    .ct-container label, 
-    .ct-container small, 
-    .ct-container li, 
-    .ct-container strong,
-    .ct-container span:not(.ct-badge) {
-        color: #ffffff !important; /* Pure white for headings and main text */
-    }
-    
-    .ct-container .muted, 
-    .ct-container .hi-text {
-        color: #a1a1aa !important; /* Light gray for secondary text and Hindi */
-    }
-    
-    .ct-card {
-        background: rgba(15, 15, 20, 0.85) !important; /* Darker, more solid background for cards */
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    }
-    
-    .ct-input {
-        background: #27272a !important;
-        color: #ffffff !important;
-        border: 1px solid #52525b !important;
-    }
-    /* --- END CONTRAST FIX --- */
+    .ct-card { background: rgba(15, 15, 20, 0.85) !important; backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.15) !important; display: block; text-decoration: none; color: inherit; transition: transform 0.2s; }
+    .ct-card:hover { transform: translateY(-2px); border-color: #10b981 !important; }
+    .ct-container h1, .ct-container h2, .ct-container h3, .ct-container p, .ct-container span:not(.hi-text) { color: #ffffff !important; }
+    .ct-container .hi-text { color: #a1a1aa !important; font-size: 0.85em; display: block; margin-top: 4px; }
 </style>
 <div class="ct-container">
-    <h1>Care Tools <span class="hi-text">देखभाल उपकरण</span></h1>
+    <h1>Care Tools</h1>
+    <h2 class="hi-text" style="font-size: 1.5rem; margin-bottom: 20px; color: #a1a1aa !important;">देखभाल उपकरण</h2>
     <p>Additional tools to help organize your treatment journey.</p>
+    
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
-        <a href="{{ url_for('care_tools.journey') }}" class="ct-card" style="text-decoration: none; color: inherit;">
-            <h2>ðŸ—ºï¸ Treatment Journey</h2>
-            <span class="hi-text">à¤‰à¤ªà¤šà¤¾à¤° à¤¯à¤¾à¤¤à¥à¤°à¤¾</span>
+        <a href="{{ url_for('care_tools.journey') }}" class="ct-card">
+            <h2>&#128506; Treatment Journey</h2>
+            <span class="hi-text">उपचार यात्रा</span>
             <p>Timeline of sessions, scans, and milestones.</p>
         </a>
-        <a href="{{ url_for('care_tools.visits') }}" class="ct-card" style="text-decoration: none; color: inherit;">
-            <h2>ðŸ““ Visit Notebook</h2>
-            <span class="hi-text">à¤®à¥à¤²à¤¾à¤•à¤¾à¤¤ à¤¨à¥‹à¤Ÿà¤¬à¥à¤•</span>
+        <a href="{{ url_for('care_tools.visits') }}" class="ct-card">
+            <h2>&#128211; Visit Notebook</h2>
+            <span class="hi-text">मुलाकात नोटबुक</span>
             <p>Record answers and follow-ups from appointments.</p>
         </a>
-        <a href="{{ url_for('care_tools.passport') }}" class="ct-card" style="text-decoration: none; color: inherit;">
-            <h2>ðŸ›‚ Care Passport</h2>
-            <span class="hi-text">à¤¦à¥‡à¤–à¤­à¤¾à¤² à¤ªà¤¾à¤¸à¤ªà¥‹à¤°à¥à¤Ÿ</span>
+        <a href="{{ url_for('care_tools.passport') }}" class="ct-card">
+            <h2>&#128706; Care Passport</h2>
+            <span class="hi-text">देखभाल पासपोर्ट</span>
             <p>Personal care card with emergency info.</p>
         </a>
     </div>
