@@ -349,7 +349,8 @@ def create_demo_circle() -> dict:
     if t1:
         claim_task(code, t1["id"], "Sarah")
 
-    add_appointment(code, "(datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d")", "Chemo Session #4", "City Cancer Center, 2nd floor")
+    add_appointment(code, (datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d"), "Chemo Session #4", "City Cancer Center, 2nd floor")
     add_appointment(code, (datetime.now() + timedelta(days=14)).strftime("%Y-%m-%d"), "Follow-up with Dr. Patel", "Telehealth")
 
     return get_circle(code)
+
