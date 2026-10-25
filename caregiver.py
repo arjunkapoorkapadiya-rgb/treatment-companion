@@ -1,6 +1,6 @@
-from datetime import timedelta
+﻿from datetime import timedelta
 """
-Care Circle — multi-user caregiver hub.
+Care Circle â€” multi-user caregiver hub.
 
 A patient creates a circle, gets a 6-char code, shares with family.
 Family members join via code, see read-only status, add notes/tasks.
@@ -339,7 +339,7 @@ def create_demo_circle() -> dict:
 
     add_note(code, "Sarah", "Thinking of you today, Mom. Call if you need anything.")
     add_note(code, "Mike", "I picked up your prescription. It's on the kitchen counter.")
-    add_note(code, "Priya", "Made extra soup — will drop it by tomorrow evening.")
+    add_note(code, "Priya", "Made extra soup â€” will drop it by tomorrow evening.")
 
     t1 = add_task(code, "Drive to chemo on Tuesday at 10am", "Sarah")
     add_task(code, "Pick up groceries Thursday", "Mike")
@@ -349,7 +349,7 @@ def create_demo_circle() -> dict:
     if t1:
         claim_task(code, t1["id"], "Sarah")
 
-    add_appointment(code, "2026-10-20", "Chemo Session #4", "City Cancer Center, 2nd floor")
+    add_appointment(code, "(datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d")", "Chemo Session #4", "City Cancer Center, 2nd floor")
     add_appointment(code, (datetime.now() + timedelta(days=14)).strftime("%Y-%m-%d"), "Follow-up with Dr. Patel", "Telehealth")
 
     return get_circle(code)

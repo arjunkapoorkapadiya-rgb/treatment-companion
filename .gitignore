@@ -7,3 +7,5 @@ data/*.json
 *.log
 backup-*/
 caregiver_syntax_*.txt
+
+.env
