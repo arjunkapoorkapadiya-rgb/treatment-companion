@@ -12,9 +12,39 @@
     .ct-badge.upcoming { background: #f59e0b; }
     .hi-text { font-size: 0.85em; color: #aaa; display: block; margin-top: 4px; }
     .linked-ref { background: rgba(59, 130, 246, 0.1); border: 1px dashed #3b82f6; padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9em; }
+    /* --- CONTRAST FIX --- */
+    .ct-container h1, 
+    .ct-container h2, 
+    .ct-container h3, 
+    .ct-container h4, 
+    .ct-container p, 
+    .ct-container label, 
+    .ct-container small, 
+    .ct-container li, 
+    .ct-container strong,
+    .ct-container span:not(.ct-badge) {
+        color: #ffffff !important; /* Pure white for headings and main text */
+    }
+    
+    .ct-container .muted, 
+    .ct-container .hi-text {
+        color: #a1a1aa !important; /* Light gray for secondary text and Hindi */
+    }
+    
+    .ct-card {
+        background: rgba(15, 15, 20, 0.85) !important; /* Darker, more solid background for cards */
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    .ct-input {
+        background: #27272a !important;
+        color: #ffffff !important;
+        border: 1px solid #52525b !important;
+    }
+    /* --- END CONTRAST FIX --- */
 </style>
 <div class="ct-container">
-    <h1>Care Passport <span class="hi-text">देखभाल पासपोर्ट</span></h1>
+    <h1>Care Passport <span class="hi-text">à¤¦à¥‡à¤–à¤­à¤¾à¤² à¤ªà¤¾à¤¸à¤ªà¥‹à¤°à¥à¤Ÿ</span></h1>
     <a href="{{ url_for('care_tools.index') }}" style="color: #10b981; margin-bottom: 20px; display: block;">&larr; Back to Care Tools</a>
     <p class="muted">This is patient-reported information.</p>
 
@@ -45,6 +75,6 @@
         </ul>
     </div>
 
-    <button onclick="window.print()" class="ct-btn" style="background: #3b82f6;">🖨️ Print Passport</button>
+    <button onclick="window.print()" class="ct-btn" style="background: #3b82f6;">ðŸ–¨ï¸ Print Passport</button>
 </div>
 {% endblock %}

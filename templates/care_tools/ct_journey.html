@@ -12,9 +12,39 @@
     .ct-badge.upcoming { background: #f59e0b; }
     .hi-text { font-size: 0.85em; color: #aaa; display: block; margin-top: 4px; }
     .linked-ref { background: rgba(59, 130, 246, 0.1); border: 1px dashed #3b82f6; padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9em; }
+    /* --- CONTRAST FIX --- */
+    .ct-container h1, 
+    .ct-container h2, 
+    .ct-container h3, 
+    .ct-container h4, 
+    .ct-container p, 
+    .ct-container label, 
+    .ct-container small, 
+    .ct-container li, 
+    .ct-container strong,
+    .ct-container span:not(.ct-badge) {
+        color: #ffffff !important; /* Pure white for headings and main text */
+    }
+    
+    .ct-container .muted, 
+    .ct-container .hi-text {
+        color: #a1a1aa !important; /* Light gray for secondary text and Hindi */
+    }
+    
+    .ct-card {
+        background: rgba(15, 15, 20, 0.85) !important; /* Darker, more solid background for cards */
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    .ct-input {
+        background: #27272a !important;
+        color: #ffffff !important;
+        border: 1px solid #52525b !important;
+    }
+    /* --- END CONTRAST FIX --- */
 </style>
 <div class="ct-container">
-    <h1>Treatment Journey <span class="hi-text">उपचार यात्रा</span></h1>
+    <h1>Treatment Journey <span class="hi-text">à¤‰à¤ªà¤šà¤¾à¤° à¤¯à¤¾à¤¤à¥à¤°à¤¾</span></h1>
     <a href="{{ url_for('care_tools.index') }}" style="color: #10b981; margin-bottom: 20px; display: block;">&larr; Back to Care Tools</a>
     
     {% if linked_appointments %}
@@ -37,7 +67,7 @@
     {% endif %}
 
     <div class="ct-card">
-        <h3>Add Event <span class="hi-text">ईवेंट जोड़ें</span></h3>
+        <h3>Add Event <span class="hi-text">à¤ˆà¤µà¥‡à¤‚à¤Ÿ à¤œà¥‹à¤¡à¤¼à¥‡à¤‚</span></h3>
         <form method="POST">
             <input type="text" name="title" placeholder="Event Title (e.g., MRI Scan)" class="ct-input" required>
             <select name="type" class="ct-input">

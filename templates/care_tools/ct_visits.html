@@ -12,13 +12,43 @@
     .ct-badge.upcoming { background: #f59e0b; }
     .hi-text { font-size: 0.85em; color: #aaa; display: block; margin-top: 4px; }
     .linked-ref { background: rgba(59, 130, 246, 0.1); border: 1px dashed #3b82f6; padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9em; }
+    /* --- CONTRAST FIX --- */
+    .ct-container h1, 
+    .ct-container h2, 
+    .ct-container h3, 
+    .ct-container h4, 
+    .ct-container p, 
+    .ct-container label, 
+    .ct-container small, 
+    .ct-container li, 
+    .ct-container strong,
+    .ct-container span:not(.ct-badge) {
+        color: #ffffff !important; /* Pure white for headings and main text */
+    }
+    
+    .ct-container .muted, 
+    .ct-container .hi-text {
+        color: #a1a1aa !important; /* Light gray for secondary text and Hindi */
+    }
+    
+    .ct-card {
+        background: rgba(15, 15, 20, 0.85) !important; /* Darker, more solid background for cards */
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    .ct-input {
+        background: #27272a !important;
+        color: #ffffff !important;
+        border: 1px solid #52525b !important;
+    }
+    /* --- END CONTRAST FIX --- */
 </style>
 <div class="ct-container">
-    <h1>Visit Notebook <span class="hi-text">मुलाकात नोटबुक</span></h1>
+    <h1>Visit Notebook <span class="hi-text">à¤®à¥à¤²à¤¾à¤•à¤¾à¤¤ à¤¨à¥‹à¤Ÿà¤¬à¥à¤•</span></h1>
     <a href="{{ url_for('care_tools.index') }}" style="color: #10b981; margin-bottom: 20px; display: block;">&larr; Back to Care Tools</a>
 
     <div class="ct-card">
-        <h3>Record a Visit <span class="hi-text">मुलाकात रिकॉर्ड करें</span></h3>
+        <h3>Record a Visit <span class="hi-text">à¤®à¥à¤²à¤¾à¤•à¤¾à¤¤ à¤°à¤¿à¤•à¥‰à¤°à¥à¤¡ à¤•à¤°à¥‡à¤‚</span></h3>
         <form method="POST">
             <input type="date" name="date" class="ct-input" required>
             <input type="text" name="clinician" placeholder="Clinician Name" class="ct-input" required>
