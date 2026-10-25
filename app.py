@@ -1,6 +1,6 @@
-﻿import os
+import os
 """
-Treatment Companion â€” Flask app.
+Treatment Companion — Flask app.
 """
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash, session
@@ -70,7 +70,7 @@ def log_symptom():
             if val:
                 entry.symptoms[name] = SymptomEntry.validate_severity(val)
         storage.save_symptom(entry)
-        flash("Entry saved. Take care of yourself today. ðŸ’š", "success")
+        flash("Entry saved. Take care of yourself today. 💚", "success")
         return redirect(request.path)
     return render_template(
         "log.html",
@@ -103,7 +103,7 @@ def analyze_page():
                 if val:
                     entry.symptoms[name] = SymptomEntry.validate_severity(val)
             storage.save_symptom(entry)
-            flash("Entry saved from AI analysis. ðŸ’š", "success")
+            flash("Entry saved from AI analysis. 💚", "success")
             return redirect(request.path)
 
         raw_text = request.form.get("raw_text", "").strip()
@@ -576,7 +576,12 @@ def not_found(e):
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
 
 
 
+
+import os
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
