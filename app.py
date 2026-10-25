@@ -1,6 +1,6 @@
 ﻿import os
 """
-Treatment Companion â€” Flask app.
+Treatment Companion &mdash; Flask app.
 """
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash, session

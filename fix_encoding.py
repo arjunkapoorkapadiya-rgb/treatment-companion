@@ -2,12 +2,12 @@
 
 # Using Unicode escapes so PowerShell can't break the characters
 replacements = {
-    '\u00e2\u20ac\u201d': '\u2014', # â€” -> —
-    '\u00e2\u20ac\u201c': '\u2013', # â€“ -> –
-    '\u00e2\u20ac\u2122': '\u2019', # â€™ -> ’
-    '\u00e2\u20ac\u0153': '\u201c', # â€œ -> “
-    '\u00e2\u20ac\u009d': '\u201d', # â€ -> ”
-    '\u00c3\u00a9': '\u00e9',       # Ã© -> é
+    '\u00e2\u20ac\u201d': '\u2014', # &mdash; -> —
+    '\u00e2\u20ac\u201c': '\u2013', # &ndash; -> –
+    '\u00e2\u20ac\u2122': '\u2019', # &rsquo; -> ’
+    '\u00e2\u20ac\u0153': '\u201c', # &ldquo; -> “
+    '\u00e2\u20ac\u009d': '\u201d', # &rdquo; -> ”
+    '\u00c3\u00a9': '\u00e9',       # &eacute; -> é
 }
 
 for filepath in glob.glob('templates/*.html'):
