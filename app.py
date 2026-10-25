@@ -15,6 +15,7 @@ from translations import get_text
 
 
 app = Flask(__name__)
+app.register_blueprint(care_tools_bp, url_prefix='/care-tools')
 app.secret_key = "treatment-companion-dev-key"
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
 
@@ -71,7 +72,7 @@ def log_symptom():
             if val:
                 entry.symptoms[name] = SymptomEntry.validate_severity(val)
         storage.save_symptom(entry)
-        flash("Entry saved. Take care of yourself today. ðŸ’š", "success")
+        flash("Entry saved. Take care of yourself today. Ã°Å¸â€™Å¡", "success")
         return redirect(request.path)
     return render_template(
         "log.html",
@@ -104,7 +105,7 @@ def analyze_page():
                 if val:
                     entry.symptoms[name] = SymptomEntry.validate_severity(val)
             storage.save_symptom(entry)
-            flash("Entry saved from AI analysis. ðŸ’š", "success")
+            flash("Entry saved from AI analysis. Ã°Å¸â€™Å¡", "success")
             return redirect(request.path)
 
         raw_text = request.form.get("raw_text", "").strip()
