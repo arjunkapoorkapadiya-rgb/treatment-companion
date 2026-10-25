@@ -1,5 +1,5 @@
-﻿{% extends "base.html" %}
-{% block title %}Care Circle â€” Treatment Companion{% endblock %}
+{% extends "base.html" %}
+{% block title %}Care Circle — Treatment Companion{% endblock %}
 
 {% block content %}
 <section class="page-head">
@@ -8,7 +8,7 @@
 </section>
 
 {% if not circle %}
-  {# === No circle selected â€” show list + create form === #}
+  {# === No circle selected — show list + create form === #}
 
   {% if circles %}
     <section class="card">
@@ -50,7 +50,7 @@
   </section>
 
 {% else %}
-  {# === Circle selected â€” show full dashboard === #}
+  {# === Circle selected — show full dashboard === #}
 
   <div class="circle-header-card">
     <div class="circle-code-display">
@@ -107,7 +107,7 @@
   {# Tasks #}
   <section class="card">
     <h2>Care tasks ({{ circle.tasks | length }})</h2>
-    <p class="muted small">Things family can help with â€” drives, groceries, calls.</p>
+    <p class="muted small">Things family can help with — drives, groceries, calls.</p>
 
     <form method="post" action="{{ url_for('caregiver_add_task', code=circle.code) }}" class="inline-form" style="margin-bottom: 16px;">
       <input type="text" name="title" placeholder="What needs doing?" required maxlength="200" / disabled placeholder="Read-only Demo">
