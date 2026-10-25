@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 {% block title %}{{ circle.patient_name }}'s Care Circle{% endblock %}
 
 {% block content %}
 <section class="page-head">
-  <h1>💚 {{ circle.patient_name }}'s Care Circle</h1>
+  <h1>ðŸ’š {{ circle.patient_name }}'s Care Circle</h1>
   <p class="muted">You're viewing as a family member. Thank you for being here.</p>
 </section>
 
@@ -24,14 +24,14 @@
 
 {% if circle.appointments %}
   <section class="card">
-    <h2>📅 Upcoming appointments</h2>
+    <h2>ðŸ“… Upcoming appointments</h2>
     <ul class="appt-list">
       {% for a in circle.appointments %}
         <li class="appt-item">
           <div class="appt-date">{{ a.date }}</div>
           <div class="appt-body">
             <strong>{{ a.title }}</strong>
-            {% if a.location %}<div class="muted small">📍 {{ a.location }}</div>{% endif %}
+            {% if a.location %}<div class="muted small">ðŸ“ {{ a.location }}</div>{% endif %}
           </div>
         </li>
       {% endfor %}
@@ -40,7 +40,7 @@
 {% endif %}
 
 <section class="card">
-  <h2>🤝 How can you help?</h2>
+  <h2>ðŸ¤ How can you help?</h2>
   <p class="muted small">Claim a task to let everyone know you've got it.</p>
 
   {% if circle.tasks %}
@@ -51,13 +51,13 @@
             <div class="task-body">
               <div class="task-title">{{ t.title }}</div>
               <div class="muted small">
-                {% if t.assigned_to %}👤 Claimed by {{ t.assigned_to }}{% else %}🟢 Available{% endif %}
+                {% if t.assigned_to %}ðŸ‘¤ Claimed by {{ t.assigned_to }}{% else %}ðŸŸ¢ Available{% endif %}
               </div>
             </div>
             {% if not t.assigned_to %}
               <form method="post" action="{{ url_for('caregiver_claim_task', code=circle.code, task_id=t.id) }}" class="claim-form">
-                <input type="text" name="member_name" placeholder="Your name" required maxlength="80" />
-                <button type="submit" class="btn btn-primary btn-tiny">I'll do this</button>
+                <input type="text" name="member_name" placeholder="Your name" required maxlength="80" / disabled placeholder="Read-only Demo">
+                <button type="submit" class="btn btn-primary btn-tiny" disabled title="Read-only Demo">I'll do this</button>
               </form>
             {% endif %}
           </li>
@@ -70,19 +70,19 @@
 </section>
 
 <section class="card">
-  <h2>💌 Leave a note</h2>
+  <h2>ðŸ’Œ Leave a note</h2>
   <p class="muted small">A short message of support. {{ circle.patient_name }} will see it.</p>
 
   <form method="post" action="{{ url_for('caregiver_leave_note', code=circle.code) }}" class="note-form">
-    <input type="text" name="author" placeholder="Your name" required maxlength="80" />
-    <textarea name="text" placeholder="Your message..." required maxlength="1000" rows="3"></textarea>
-    <button type="submit" class="btn btn-primary">Send note</button>
+    <input type="text" name="author" placeholder="Your name" required maxlength="80" / disabled placeholder="Read-only Demo">
+    <textarea name="text" placeholder="Your message..." required maxlength="1000" rows="3" disabled placeholder="Read-only Demo"></textarea>
+    <button type="submit" class="btn btn-primary" disabled title="Read-only Demo">Send note</button>
   </form>
 </section>
 
 {% if circle.notes %}
   <section class="card">
-    <h2>💬 Notes from the circle</h2>
+    <h2>ðŸ’¬ Notes from the circle</h2>
     <ul class="note-list">
       {% for n in circle.notes %}
         <li class="note-item">
@@ -99,13 +99,13 @@
 
 {% if circle.members %}
   <section class="card">
-    <h2>👨‍👩‍👧 The care circle</h2>
+    <h2>ðŸ‘¨â€ðŸ‘©â€ðŸ‘§ The care circle</h2>
     <ul class="member-list">
       {% for m in circle.members %}
         <li class="member-item">
           <div>
             <strong>{{ m.name }}</strong>
-            {% if m.relation %}<span class="muted small">· {{ m.relation }}</span>{% endif %}
+            {% if m.relation %}<span class="muted small">Â· {{ m.relation }}</span>{% endif %}
           </div>
         </li>
       {% endfor %}
@@ -116,7 +116,8 @@
 <div class="card">
   <p class="muted small center">
     Family members can claim tasks and leave notes for the patient. The patient controls who's in the circle.<br>
-    <a href="{{ url_for('caregiver_dashboard') }}">← Back to care circle home</a>
+    <a href="{{ url_for('caregiver_dashboard') }}">â† Back to care circle home</a>
   </p>
 </div>
 {% endblock %}
+

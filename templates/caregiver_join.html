@@ -11,23 +11,23 @@
   <div class="field">
     <label for="code">Circle code</label>
     <input type="text" id="code" name="code" placeholder="ABC123" required maxlength="6"
-           style="text-transform: uppercase; letter-spacing: 4px; font-size: 24px; font-weight: 700; text-align: center;" />
+           style="text-transform: uppercase; letter-spacing: 4px; font-size: 24px; font-weight: 700; text-align: center;" / disabled placeholder="Read-only Demo">
     <p class="muted small">6 letters/numbers, no spaces.</p>
   </div>
 
   <div class="field">
     <label for="name">Your name</label>
-    <input type="text" id="name" name="name" placeholder="e.g., Sarah" required maxlength="80" />
+    <input type="text" id="name" name="name" placeholder="e.g., Sarah" required maxlength="80" / disabled placeholder="Read-only Demo">
   </div>
 
   <div class="field">
     <label for="relation">Your relation (optional)</label>
-    <input type="text" id="relation" name="relation" placeholder="e.g., Daughter, Friend, Neighbor" maxlength="40" />
+    <input type="text" id="relation" name="relation" placeholder="e.g., Daughter, Friend, Neighbor" maxlength="40" / disabled placeholder="Read-only Demo">
   </div>
 
   <div class="form-actions">
     <a href="{{ url_for('caregiver_dashboard') }}" class="btn btn-secondary">Cancel</a>
-    <button type="submit" class="btn btn-primary">Join circle</button>
+    <button type="submit" class="btn btn-primary" disabled title="Read-only Demo">Join circle</button>
   </div>
 </form>
 
@@ -37,3 +37,4 @@
   </p>
 </section>
 {% endblock %}
+
