@@ -51,8 +51,8 @@
             </div>
             {% if not t.assigned_to %}
               <form method="post" action="{{ url_for('caregiver_claim_task', code=circle.code, task_id=t.id) }}" class="claim-form">
-                <input type="text" name="member_name" placeholder="Your name" required maxlength="80" / disabled placeholder="Read-only Demo">
-                <button type="submit" class="btn btn-primary btn-tiny" disabled title="Read-only Demo">I'll do this</button>
+                <input type="text" name="member_name" placeholder="Your name" required maxlength="80" / placeholder="Read-only Demo">
+                <button type="submit" class="btn btn-primary btn-tiny" title="Read-only Demo">I'll do this</button>
               </form>
             {% endif %}
           </li>
@@ -68,9 +68,9 @@
   <p class="muted small">A short message of support. {{ circle.patient_name }} will see it.</p>
 
   <form method="post" action="{{ url_for('caregiver_leave_note', code=circle.code) }}" class="note-form">
-    <input type="text" name="author" placeholder="Your name" required maxlength="80" / disabled placeholder="Read-only Demo">
-    <textarea name="text" placeholder="Your message..." required maxlength="1000" rows="3" disabled placeholder="Read-only Demo"></textarea>
-    <button type="submit" class="btn btn-primary" disabled title="Read-only Demo">Send note</button>
+    <input type="text" name="author" placeholder="Your name" required maxlength="80" / placeholder="Read-only Demo">
+    <textarea name="text" placeholder="Your message..." required maxlength="1000" rows="3" placeholder="Read-only Demo"></textarea>
+    <button type="submit" class="btn btn-primary" title="Read-only Demo">Send note</button>
   </form>
 </section>
 
