@@ -121,3 +121,20 @@ def passport():
         current_meds = [{"name": "Demo Med A", "dose": "10mg"}, {"name": "Demo Med B", "dose": "5mg"}]
         
     return render_template('ct_passport.html', passport=data['passport'], medications=current_meds)
+@care_tools_bp.route('/report-explainer', methods=['GET', 'POST'])
+def report_explainer():
+    analysis = None
+    if request.method == 'POST':
+        report_text = request.form.get('report_text')
+        if report_text:
+            # SAFE MOCK: If you have a real AI service, replace this block with your API call
+            # Example: from ai_service import generate_explanation
+            analysis = f"""
+            <strong>Disclaimer: This is an AI-generated explanation, not medical advice.</strong><br><br>
+            Based on the text you provided, here is a plain-language breakdown:<br>
+            - The report mentions findings that your doctor will review.<br>
+            - Medical terms like <em>hemoglobin</em> or <em>lesion</em> can sound scary, but context matters.<br>
+            - Please write down specific questions for your oncologist based on this text.<br><br>
+            <em>(This is a demo response. Connect your AI service here for real analysis.)</em>
+            """
+    return render_template('ct_explainer.html', analysis=analysis)

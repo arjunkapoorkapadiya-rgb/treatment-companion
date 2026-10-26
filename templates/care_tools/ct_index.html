@@ -9,24 +9,28 @@
 </style>
 <div class="ct-container">
     <h1>Care Tools</h1>
-    <h2 class="hi-text" style="font-size: 1.5rem; margin-bottom: 20px; color: #a1a1aa !important;">देखभाल उपकरण</h2>
+    <h2 class="hi-text" style="font-size: 1.5rem; margin-bottom: 20px; color: #a1a1aa !important;">à¤¦à¥‡à¤–à¤­à¤¾à¤² à¤‰à¤ªà¤•à¤°à¤£</h2>
     <p>Additional tools to help organize your treatment journey.</p>
     
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
         <a href="{{ url_for('care_tools.journey') }}" class="ct-card">
             <h2>&#128506; Treatment Journey</h2>
-            <span class="hi-text">उपचार यात्रा</span>
+            <span class="hi-text">à¤‰à¤ªà¤šà¤¾à¤° à¤¯à¤¾à¤¤à¥à¤°à¤¾</span>
             <p>Timeline of sessions, scans, and milestones.</p>
         </a>
         <a href="{{ url_for('care_tools.visits') }}" class="ct-card">
             <h2>&#128211; Visit Notebook</h2>
-            <span class="hi-text">मुलाकात नोटबुक</span>
+            <span class="hi-text">à¤®à¥à¤²à¤¾à¤•à¤¾à¤¤ à¤¨à¥‹à¤Ÿà¤¬à¥à¤•</span>
             <p>Record answers and follow-ups from appointments.</p>
         </a>
         <a href="{{ url_for('care_tools.passport') }}" class="ct-card">
             <h2>&#128706; Care Passport</h2>
-            <span class="hi-text">देखभाल पासपोर्ट</span>
+            <span class="hi-text">à¤¦à¥‡à¤–à¤­à¤¾à¤² à¤ªà¤¾à¤¸à¤ªà¥‹à¤°à¥à¤Ÿ</span>
             <p>Personal care card with emergency info.</p>
+        </a>
+        <a href="{{ url_for('care_tools.report_explainer') }}" class="ct-card">
+            <h2>&#128196; AI Report Explainer</h2>
+            <p>Paste a medical report and get a plain-language breakdown.</p>
         </a>
     </div>
 </div>
