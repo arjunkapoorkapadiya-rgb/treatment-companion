@@ -3,7 +3,6 @@
 
 {% block content %}
 <section class="page-head">
-  <h1>ðŸ‘¨&rdquo;ðŸ‘©&rdquo;ðŸ‘§ Care Circle</h1>
   <p class="muted">Invite family to support you. They can see your status, claim care tasks, and leave encouraging notes.</p>
 </section>
 
@@ -127,7 +126,6 @@
             <div class="task-body">
               <div class="task-title">{{ t.title }}</div>
               <div class="muted small">
-                {% if t.assigned_to %}ðŸ‘¤ {{ t.assigned_to }}{% else %}unclaimed{% endif %}
               </div>
             </div>
             <form method="post" action="{{ url_for('caregiver_delete_task', code=circle.code, task_id=t.id) }}" class="inline">
@@ -159,7 +157,6 @@
             <div class="appt-date">{{ a.date }}</div>
             <div class="appt-body">
               <strong>{{ a.title }}</strong>
-              {% if a.location %}<div class="muted small">ðŸ“ {{ a.location }}</div>{% endif %}
             </div>
             <form method="post" action="{{ url_for('caregiver_delete_appt', code=circle.code, appt_id=a.id) }}" class="inline">
               <button type="submit" class="btn btn-tiny btn-danger" onclick="return confirm('Delete appointment?')" disabled title="Read-only Demo">Ã—</button>
@@ -205,7 +202,6 @@
 
   <section class="card">
     <a href="{{ url_for('caregiver_view', code=circle.code) }}" class="btn btn-secondary">
-      ðŸ‘ï¸ Preview family view â†’
     </a>
   </section>
 

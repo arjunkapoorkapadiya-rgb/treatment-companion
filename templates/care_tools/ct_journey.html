@@ -44,7 +44,6 @@
     /* --- END CONTRAST FIX --- */
 </style>
 <div class="ct-container">
-    <h1>Treatment Journey <span class="hi-text">à¤‰à¤ªà¤šà¤¾à¤° à¤¯à¤¾à¤¤à¥à¤°à¤¾</span></h1>
     <a href="{{ url_for('care_tools.index') }}" style="color: #10b981; margin-bottom: 20px; display: block;">&larr; Back to Care Tools</a>
     
     {% if linked_appointments %}
@@ -67,7 +66,6 @@
     {% endif %}
 
     <div class="ct-card">
-        <h3>Add Event <span class="hi-text">à¤ˆà¤µà¥‡à¤‚à¤Ÿ à¤œà¥‹à¤¡à¤¼à¥‡à¤‚</span></h3>
         <form method="POST">
             <input type="text" name="title" placeholder="Event Title (e.g., MRI Scan)" class="ct-input" required>
             <select name="type" class="ct-input">

@@ -3,7 +3,6 @@
 
 {% block content %}
 <section class="page-head">
-  <h1>ðŸ’š {{ circle.patient_name }}'s Care Circle</h1>
   <p class="muted">You're viewing as a family member. Thank you for being here.</p>
 </section>
 
@@ -24,14 +23,12 @@
 
 {% if circle.appointments %}
   <section class="card">
-    <h2>ðŸ“… Upcoming appointments</h2>
     <ul class="appt-list">
       {% for a in circle.appointments %}
         <li class="appt-item">
           <div class="appt-date">{{ a.date }}</div>
           <div class="appt-body">
             <strong>{{ a.title }}</strong>
-            {% if a.location %}<div class="muted small">ðŸ“ {{ a.location }}</div>{% endif %}
           </div>
         </li>
       {% endfor %}
@@ -40,7 +37,6 @@
 {% endif %}
 
 <section class="card">
-  <h2>ðŸ¤ How can you help?</h2>
   <p class="muted small">Claim a task to let everyone know you've got it.</p>
 
   {% if circle.tasks %}
@@ -51,7 +47,6 @@
             <div class="task-body">
               <div class="task-title">{{ t.title }}</div>
               <div class="muted small">
-                {% if t.assigned_to %}ðŸ‘¤ Claimed by {{ t.assigned_to }}{% else %}ðŸŸ¢ Available{% endif %}
               </div>
             </div>
             {% if not t.assigned_to %}
@@ -70,7 +65,6 @@
 </section>
 
 <section class="card">
-  <h2>ðŸ’Œ Leave a note</h2>
   <p class="muted small">A short message of support. {{ circle.patient_name }} will see it.</p>
 
   <form method="post" action="{{ url_for('caregiver_leave_note', code=circle.code) }}" class="note-form">
@@ -82,7 +76,6 @@
 
 {% if circle.notes %}
   <section class="card">
-    <h2>ðŸ’¬ Notes from the circle</h2>
     <ul class="note-list">
       {% for n in circle.notes %}
         <li class="note-item">
@@ -99,7 +92,6 @@
 
 {% if circle.members %}
   <section class="card">
-    <h2>ðŸ‘¨&rdquo;ðŸ‘©&rdquo;ðŸ‘§ The care circle</h2>
     <ul class="member-list">
       {% for m in circle.members %}
         <li class="member-item">
