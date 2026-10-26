@@ -1,32 +1,30 @@
-﻿import glob
+import glob
+import os
 
-# Using Unicode escapes so PowerShell can't break the characters
-replacements = {
-    '\u00e2\u20ac\u201d': '\u2014', # &mdash; -> —
-    '\u00e2\u20ac\u201c': '\u2013', # &ndash; -> –
-    '\u00e2\u20ac\u2122': '\u2019', # &rsquo; -> ’
-    '\u00e2\u20ac\u0153': '\u201c', # &ldquo; -> “
-    '\u00e2\u20ac\u009d': '\u201d', # &rdquo; -> ”
-    '\u00c3\u00a9': '\u00e9',       # &eacute; -> é
-}
-
-for filepath in glob.glob('templates/*.html'):
+def fix_mojibake(text):
     try:
-        # Read stripping any BOM
-        with open(filepath, 'r', encoding='utf-8-sig') as f:
+        # This magic line reverses the exact corruption PowerShell caused
+        return text.encode('cp1252').decode('utf-8')
+    except Exception:
+        pass
+    try:
+        return text.encode('latin-1').decode('utf-8')
+    except Exception:
+        return text
+
+for filepath in glob.glob('templates/care_tools/*.html'):
+    if os.path.exists(filepath):
+        with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
-
-        original_content = content
-        for bad, good in replacements.items():
-            content = content.replace(bad, good)
-
-        # Write back as standard UTF-8 WITHOUT BOM
+        
+        fixed = fix_mojibake(content)
+        
+        # Manual safety replacements just in case
+        fixed = fixed.replace('à¤¦à¥‡à¤–à¤­à¤¾à¤² à¤‰à¤ªà¤•à¤°à¤£', 'देखभाल उपकरण')
+        fixed = fixed.replace('à¤‰à¤ªà¤šà¤¾à¤° à¤¯à¤¾à¤¤à¥à¤°à¤¾', 'उपचार यात्रा')
+        fixed = fixed.replace('à¤®à¥à¤²à¤¾à¤•à¤¾à¤¤ à¤¨à¥‹à¤Ÿà¤¬à¥à¤•', 'मुलाकात नोटबुक')
+        fixed = fixed.replace('à¤¦à¥‡à¤–à¤­à¤¾à¤² à¤ªà¤¾à¤¸à¤ªà¥‹à¤°à¥à¤Ÿ', 'देखभाल पासपोर्ट')
+        
         with open(filepath, 'w', encoding='utf-8') as f:
-            f.write(content)
-            
-        if content != original_content:
-            print(f"Fixed encoding in {filepath}")
-        else:
-            print(f"Clean: {filepath}")
-    except Exception as e:
-        print(f"Error processing {filepath}: {e}")
+            f.write(fixed)
+        print(f"Fixed {filepath}")

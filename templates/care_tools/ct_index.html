@@ -2,30 +2,25 @@
 {% block content %}
 <style>
     .ct-container { max-width: 800px; margin: 0 auto; padding: 20px; font-family: 'Geist', sans-serif; color: #fff; }
-    .ct-card { background: rgba(15, 15, 20, 0.85) !important; backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.15) !important; display: block; text-decoration: none; color: inherit; transition: transform 0.2s; }
+    .ct-card { background: rgba(15, 15, 20, 0.85) !important; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.15) !important; display: block; text-decoration: none; color: inherit; transition: transform 0.2s; }
     .ct-card:hover { transform: translateY(-2px); border-color: #10b981 !important; }
-    .ct-container h1, .ct-container h2, .ct-container h3, .ct-container p, .ct-container span:not(.hi-text) { color: #ffffff !important; }
-    .ct-container .hi-text { color: #a1a1aa !important; font-size: 0.85em; display: block; margin-top: 4px; }
+    .ct-container h1, .ct-container h2, .ct-container p, .ct-container span:not(.hi-text) { color: #ffffff !important; }
 </style>
 <div class="ct-container">
     <h1>Care Tools</h1>
-    <h2 class="hi-text" style="font-size: 1.5rem; margin-bottom: 20px; color: #a1a1aa !important;">à¤¦à¥‡à¤–à¤­à¤¾à¤² à¤‰à¤ªà¤•à¤°à¤£</h2>
     <p>Additional tools to help organize your treatment journey.</p>
     
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
         <a href="{{ url_for('care_tools.journey') }}" class="ct-card">
             <h2>&#128506; Treatment Journey</h2>
-            <span class="hi-text">à¤‰à¤ªà¤šà¤¾à¤° à¤¯à¤¾à¤¤à¥à¤°à¤¾</span>
             <p>Timeline of sessions, scans, and milestones.</p>
         </a>
         <a href="{{ url_for('care_tools.visits') }}" class="ct-card">
             <h2>&#128211; Visit Notebook</h2>
-            <span class="hi-text">à¤®à¥à¤²à¤¾à¤•à¤¾à¤¤ à¤¨à¥‹à¤Ÿà¤¬à¥à¤•</span>
             <p>Record answers and follow-ups from appointments.</p>
         </a>
         <a href="{{ url_for('care_tools.passport') }}" class="ct-card">
             <h2>&#128706; Care Passport</h2>
-            <span class="hi-text">à¤¦à¥‡à¤–à¤­à¤¾à¤² à¤ªà¤¾à¤¸à¤ªà¥‹à¤°à¥à¤Ÿ</span>
             <p>Personal care card with emergency info.</p>
         </a>
         <a href="{{ url_for('care_tools.report_explainer') }}" class="ct-card">

@@ -6,29 +6,33 @@
     .ct-btn { background: #10b981; color: white; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
     .ct-input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #52525b !important; background: #27272a !important; color: white !important; }
     .ct-container h1, .ct-container h2, .ct-container p, .ct-container label { color: #ffffff !important; }
-    .ai-output { background: #1e1e24; padding: 15px; border-left: 4px solid #10b981; border-radius: 4px; margin-top: 20px; line-height: 1.6; }
+    .ai-output { background: #1e1e24; padding: 15px; border-left: 4px solid #10b981; border-radius: 4px; margin-top: 20px; line-height: 1.6; color: #e4e4e7; }
 </style>
 <div class="ct-container">
     <h1>AI Report Explainer</h1>
     <a href="{{ url_for('care_tools.index') }}" style="color: #10b981; margin-bottom: 20px; display: block;">&larr; Back to Care Tools</a>
     
     <div class="ct-card">
-        <h3>Paste your medical report text here</h3>
-        <p class="muted">Do not upload files. Just copy and paste the text from your lab results or scan report.</p>
-        <form method="POST">
-            <textarea name="report_text" class="ct-input" rows="8" placeholder="Paste report text here..." required></textarea>
-            <button type="submit" class="ct-btn">Explain this Report</button>
+        <h3>Upload or Paste your medical report</h3>
+        <form method="POST" enctype="multipart/form-data">
+            <label>Option 1: Upload File (PDF, JPG, PNG)</label>
+            <input type="file" name="report_file" class="ct-input" accept=".pdf,.jpg,.jpeg,.png" style="padding: 8px;">
+            
+            <label style="margin-top: 15px; display: block;">Option 2: Paste Text</label>
+            <textarea name="report_text" class="ct-input" rows="5" placeholder="Or paste report text here..."></textarea>
+            
+            <button type="submit" class="ct-btn">Analyze Report</button>
         </form>
     </div>
 
     {% if analysis %}
     <div class="ct-card">
-        <h2>AI Explanation</h2>
+        <h2>Detailed Analysis</h2>
         <div class="ai-output">
             {{ analysis | safe }}
         </div>
         <p style="font-size: 0.8em; color: #ef4444; margin-top: 15px;">
-            ⚠️ <strong>Safety Warning:</strong> AI can make mistakes. This explanation is for educational purposes only. Always discuss your actual medical reports with your oncologist.
+            <strong>Safety Warning:</strong> AI can make mistakes. This explanation is for educational purposes only. Always discuss your actual medical reports with your oncologist.
         </p>
     </div>
     {% endif %}

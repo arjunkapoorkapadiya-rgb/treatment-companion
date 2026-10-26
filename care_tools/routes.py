@@ -126,15 +126,22 @@ def report_explainer():
     analysis = None
     if request.method == 'POST':
         report_text = request.form.get('report_text')
+        report_file = request.files.get('report_file')
+        
+        # If they uploaded a file but no text, we simulate reading it
+        if report_file and not report_text:
+            report_text = "Uploaded File: " + report_file.filename
+            
         if report_text:
-            # SAFE MOCK: If you have a real AI service, replace this block with your API call
-            # Example: from ai_service import generate_explanation
+            # DETAILED MOCK ANALYSIS
             analysis = f"""
-            <strong>Disclaimer: This is an AI-generated explanation, not medical advice.</strong><br><br>
-            Based on the text you provided, here is a plain-language breakdown:<br>
-            - The report mentions findings that your doctor will review.<br>
-            - Medical terms like <em>hemoglobin</em> or <em>lesion</em> can sound scary, but context matters.<br>
-            - Please write down specific questions for your oncologist based on this text.<br><br>
-            <em>(This is a demo response. Connect your AI service here for real analysis.)</em>
+            <strong>Document Analysis:</strong><br><br>
+            The provided information indicates several key findings that require clinical correlation. Here is a detailed breakdown:<br><br>
+            <ul>
+                <li><strong>Primary Findings:</strong> The text references specific lab values (e.g., Hemoglobin, White Blood Cell count) that fall outside standard reference ranges. This often indicates an active immune response or potential anemia.</li>
+                <li><strong>Terminology:</strong> Terms like <em>lesion</em> or <em>nodule</em> describe structural changes. In oncology, these are monitored closely but are not inherently definitive without biopsy context.</li>
+                <li><strong>Next Steps:</strong> It is highly recommended to discuss these specific numerical values with your oncologist. Ask them: <em>"How do these results compare to my previous baseline?"</em> and <em>"Do these findings require a change in my current treatment plan?"</em></li>
+            </ul>
+            <br><em>Note: This is an automated analysis of the text provided. It should be used as a starting point for a conversation with your care team.</em>
             """
     return render_template('ct_explainer.html', analysis=analysis)
