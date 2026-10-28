@@ -15,6 +15,12 @@ from translations import get_text
 
 
 app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
 app.register_blueprint(care_tools_bp, url_prefix='/care-tools')
 app.secret_key = "treatment-companion-dev-key"
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
