@@ -58,28 +58,22 @@ def index():
 
 @app.route("/log", methods=["GET", "POST"])
 def log_symptom():
-    if request.method == "POST":
-        entry = SymptomEntry(
-            entry_date=request.form.get("entry_date") or SymptomEntry().entry_date,
-            severity=SymptomEntry.validate_severity(request.form.get("severity", 1)),
-            symptoms={},
-            notes=request.form.get("notes", "").strip(),
-            sleep_hours=request.form.get("sleep_hours", "").strip(),
-        )
-        for name in COMMON_SYMPTOMS:
-            val = request.form.get(f"symptom_{name}")
-            if val:
-                entry.symptoms[name] = SymptomEntry.validate_severity(val)
-        storage.save_symptom(entry)
-        flash("Entry saved. Take care of yourself today. Ã°Å¸â€™Å¡", "success")
-        return redirect(request.path)
-    return render_template(
-        "log.html",
-        common_symptoms=COMMON_SYMPTOMS,
-        severity_labels=SEVERITY_LABELS,
-    )
-
-
+        if request.method == "POST":
+            # Only save the fields that exist in your database model
+            entry = SymptomEntry(
+                entry_date=request.form.get("entry_date"),
+                severity=request.form.get("severity"),
+                notes=request.form.get("notes")
+            )
+            db.session.add(entry)
+            db.session.commit()
+            return redirect(url_for("log_symptom"))
+            
+        # Render the template with the required variables
+        return render_template("log.html", 
+            common_symptoms=["fatigue", "nausea", "pain", "fever", "cough"], 
+            severity_labels={1:"None", 2:"Mild", 3:"Moderate", 4:"Severe", 5:"Very Severe"})
+    
 @app.route("/entry/<entry_id>/delete", methods=["POST"])
 def delete_entry(entry_id):
     storage.delete_symptom(entry_id)
