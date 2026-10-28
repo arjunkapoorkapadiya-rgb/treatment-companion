@@ -13,9 +13,9 @@
   {% endif %}
   <header class="site-header">
     <div class="container header-inner">
-      <a href="{{ url_for('care_tools.index') }}" class="brand"><span class="brand-mark">💚</span><span class="brand-text">Treatment Companion</span></a>
+      <a href="/" class="brand"><span class="brand-mark">💚</span><span class="brand-text">Treatment Companion</span></a>
       <nav class="site-nav">
-        <a href="{{ url_for('care_tools.index') }}">{{ t('home') }}</a>
+        <a href="/">{{ t('home') }}</a>
         <a href="{{ url_for('log_symptom') }}">{{ t('log') }}</a>
         <a href="{{ url_for('analyze_page') }}" class="nav-ai">✨ {{ t('ai_log') }}</a>
         <a href="{{ url_for('chat_page') }}" class="nav-ai">💬 Chat</a>
