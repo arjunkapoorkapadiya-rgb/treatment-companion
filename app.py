@@ -64,7 +64,6 @@ def log_symptom():
             severity=SymptomEntry.validate_severity(request.form.get("severity", 1)),
             symptoms={},
             notes=request.form.get("notes", "").strip(),
-            "").strip(),
             sleep_hours=request.form.get("sleep_hours", "").strip(),
         )
         for name in COMMON_SYMPTOMS:
@@ -97,7 +96,6 @@ def analyze_page():
                 severity=SymptomEntry.validate_severity(request.form.get("severity", 1)),
                 symptoms={},
                 notes=request.form.get("notes", "").strip(),
-            "").strip(),
             sleep_hours=request.form.get("sleep_hours", "").strip(),
             )
             for name in COMMON_SYMPTOMS:
