@@ -30,50 +30,23 @@ def inject_translations():
     )
 
 
-@app.route("/set-lang/<lang>")
-def set_lang(lang):
-    """Toggle language and redirect back."""
-    if lang in ["en", "hi"]:
-        session["lang"] = lang
-    return redirect(request.referrer or url_for("index"))
-
-
-# ==== Pages ====
-
-@app.route("/")
-def index():
-    entries = storage.recent_entries(days=14)
-    insights = storage.pattern_insights(days=14)
-    questions = [q for q in storage.list_questions() if not q.asked]
-    meds_summary = medications.today_summary()
-    return render_template(
-        "index.html",
-        entries=entries,
-        insights=insights,
-        questions=questions,
-        severity_labels=SEVERITY_LABELS,
-        meds_summary=meds_summary,
-    )
-
-
 @app.route("/log", methods=["GET", "POST"])
 def log_symptom():
-        if request.method == "POST":
-            # Only save the fields that exist in your database model
-            entry = SymptomEntry(
-                entry_date=request.form.get("entry_date"),
-                severity=request.form.get("severity"),
-                notes=request.form.get("notes")
-            )
-            db.session.add(entry)
-            db.session.commit()
-            return redirect(url_for("log_symptom"))
-            
-        # Render the template with the required variables
-        return render_template("log.html", 
-            common_symptoms=["fatigue", "nausea", "pain", "fever", "cough"], 
-            severity_labels={1:"None", 2:"Mild", 3:"Moderate", 4:"Severe", 5:"Very Severe"})
-    
+    if request.method == "POST":
+        entry = SymptomEntry(
+            entry_date=request.form.get("entry_date"),
+            severity=request.form.get("severity"),
+            notes=request.form.get("notes")
+        )
+        db.session.add(entry)
+        db.session.commit()
+        flash("Symptom logged successfully!", "success")
+        return redirect(url_for("log_symptom"))
+        
+    return render_template("log.html", 
+        common_symptoms=["fatigue", "nausea", "pain", "fever", "cough"], 
+        severity_labels={1:"None", 2:"Mild", 3:"Moderate", 4:"Severe", 5:"Very Severe"})
+
 @app.route("/entry/<entry_id>/delete", methods=["POST"])
 def delete_entry(entry_id):
     storage.delete_symptom(entry_id)
@@ -568,9 +541,6 @@ def not_found(e):
 
 # ==== Run ====
 
-with app.app_context():
-    db.create_all()
-
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
 
@@ -578,9 +548,6 @@ if __name__ == "__main__":
 
 
 import os
-
-with app.app_context():
-    db.create_all()
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
