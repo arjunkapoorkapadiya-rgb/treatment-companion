@@ -26,6 +26,12 @@ app.secret_key = "treatment-companion-dev-key"
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
 
 
+@app.route("/set-lang/<lang>")
+def set_lang(lang):
+    session["lang"] = lang if lang in ("en", "hi") else "en"
+    return redirect(url_for("log_symptom"))
+
+
 # Inject translation function into all templates
 @app.context_processor
 def inject_translations():
@@ -40,18 +46,24 @@ def inject_translations():
 def log_symptom():
     if request.method == "POST":
         entry = SymptomEntry(
-            entry_date=request.form.get("entry_date"),
-            severity=request.form.get("severity"),
-            notes=request.form.get("notes")
+            entry_date=request.form.get("entry_date") or SymptomEntry().entry_date,
+            severity=SymptomEntry.validate_severity(request.form.get("severity", 1)),
+            notes=request.form.get("notes", "").strip(),
+            temperature=request.form.get("temperature", "").strip(),
+            sleep_hours=request.form.get("sleep_hours", "").strip(),
         )
-        db.session.add(entry)
-        db.session.commit()
+        for name in COMMON_SYMPTOMS:
+            value = request.form.get(f"symptom_{name}")
+            if value:
+                entry.symptoms[name] = SymptomEntry.validate_severity(value)
+        storage.save_symptom(entry)
         flash("Symptom logged successfully!", "success")
         return redirect(url_for("log_symptom"))
-        
-    return render_template("log.html", 
-        common_symptoms=["fatigue", "nausea", "pain", "fever", "cough"], 
-        severity_labels={1:"None", 2:"Mild", 3:"Moderate", 4:"Severe", 5:"Very Severe"})
+    return render_template(
+        "log.html",
+        common_symptoms=COMMON_SYMPTOMS,
+        severity_labels=SEVERITY_LABELS,
+    )
 
 @app.route("/entry/<entry_id>/delete", methods=["POST"])
 def delete_entry(entry_id):

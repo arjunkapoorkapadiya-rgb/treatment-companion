@@ -1,4 +1,4 @@
-﻿"""
+"""
 Data models for Treatment Companion.
 
 Every symptom entry is one row of the patient's daily log.
@@ -53,6 +53,8 @@ class SymptomEntry:
     severity: int = 1
     symptoms: dict = field(default_factory=dict)
     notes: str = ""
+    temperature: str = ""
+    sleep_hours: str = ""
     questions: list = field(default_factory=list)
     created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
 
